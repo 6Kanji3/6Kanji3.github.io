@@ -16,6 +16,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            overflow: hidden;
             color: #333;
         }
 
@@ -65,6 +66,12 @@
 
         .teacher-card:hover {
             transform: scale(1.02);
+        }
+
+        .teacher-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
         }
 
         .rating-container {
@@ -138,6 +145,20 @@
             background-color: #cd7f32; /* Bronze */
         }
 
+        .confetti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        .confetti.show {
+            display: block;
+        }
+
         /* Responsive Styles */
         @media (max-width: 600px) {
             h1 {
@@ -158,25 +179,6 @@
                 font-size: 20px;
             }
         }
-
-        /* Konfetti-Animation */
-        .confetti {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: red;
-            opacity: 0.8;
-            animation: fall 3s infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(100vh);
-            }
-        }
     </style>
 </head>
 <body>
@@ -188,8 +190,8 @@
         <div id="rating-section">
             <h2>Lehrer bewerten</h2>
             <div id="teachers-container"></div>
-            <button class="button" id="next-button">Nächster Lehrer</button>
-            <button class="button" id="submit-button" style="display:none;">Bewertung abschicken</button>
+            <button class="button" id="submit-button">Bewertung abschicken</button>
+            <div id="timer"></div>
         </div>
 
         <div id="top-teachers">
@@ -198,175 +200,169 @@
                 <div class="podium-position" id="first"></div>
                 <div class="podium-position" id="second"></div>
                 <div class="podium-position" id="third"></div>
+                <div class="confetti" id="confetti"></div>
             </div>
         </div>
     </div>
 
     <script>
         const teachers = [
-            { name: "Frau Milani" },
-            { name: "Frau Heuser" },
-            { name: "Herr Geßner" },
-            { name: "Frau Kölker" },
-            { name: "Frau Luckey" },
-            { name: "Herr Leitner" },
-            { name: "Herr Menzel" },
-            { name: "Frau Leistikow" },
-            { name: "Frau Selenkowitch" },
-            { name: "Frau Kosar" },
-            { name: "Frau Dietsch" },
-            { name: "Herr Luetel" },
-            { name: "Herr Claßen" },
-            { name: "Herr Hanke" },
-            { name: "Frau Lips" }
+            { name: "Frau Milani", image: "https://example.com/milani.jpg" },
+            { name: "Frau Heuser", image: "https://example.com/heuser.jpg" },
+            { name: "Herr Geßner", image: "https://example.com/geßner.jpg" },
+            { name: "Frau Kölker", image: "https://example.com/koelker.jpg" },
+            { name: "Frau Luckey", image: "https://example.com/luckey.jpg" },
+            { name: "Herr Leitner", image: "https://example.com/leitner.jpg" },
+            { name: "Herr Menzel", image: "https://example.com/menzel.jpg" },
+            { name: "Frau Leistikow", image: "https://example.com/leistikow.jpg" },
+            { name: "Frau Selenkowitch", image: "https://example.com/selenkowitch.jpg" },
+            { name: "Frau Kosar", image: "https://example.com/kosar.jpg" },
+            { name: "Frau Dietsch", image: "https://example.com/dietsch.jpg" },
+            { name: "Herr Luetel", image: "https://example.com/luetel.jpg" },
+            { name: "Herr Claßen", image: "https://example.com/classen.jpg" },
+            { name: "Herr Hanke", image: "https://example.com/hanke.jpg" },
+            { name: "Frau Lips", image: "https://example.com/lips.jpg" }
         ];
 
-        const adjectivesPositive = [
-            "Hilfsbereit", "Engagiert", "Kompetent", "Zuverlässig", 
-            "Motiviert", "Respektvoll", "Inspirierend", "Flexibel", 
-            "Witzig", "Geduldig", "Einfühlsam", "Kreativ", 
-            "Fair", "Strukturiert", "Ehrlich", "Zielstrebig", 
-            "Verständnisvoll", "Offen", "Loyal", "Pragmatisch", 
-            "Analytisch", "Vorausschauend", "Optimistisch", "Diskret", 
-            "Harmonisch", "Pünktlich"
+        const goodAdjectives = [
+            "freundlich", "geduldig", "hilfsbereit", "inspirierend", "kreativ",
+            "kompetent", "motiviert", "strukturiert", "erfahren", "zielstrebig",
+            "einfühlsam", "sympathisch", "dynamisch", "entspannt", "verlässlich",
+            "lebensbejahend", "flexibel", "engagiert", "zuverlässig", "humorvoll",
+            "positiv", "intelligent", "begeisternd", "herzlich", "tolerant"
         ];
 
-        const adjectivesNegative = [
-            "Unorganisiert", "Ungeduldig", "Unfair", "Inkompetent", 
-            "Demotivierend", "Unhöflich", "Streng", "Langweilig", 
-            "Unflexibel", "Unaufmerksam", "Schüchtern", "Überheblich", 
-            "Negativ", "Desinteressiert", "Chaotisch", "Kritiklos", 
-            "Unverständlich", "Distanziert", "Passiv", "Einseitig", 
-            "Nervös", "Apathisch", "Irritierend", "Skeptisch", 
-            "Ressentiment", "Stur"
+        const badAdjectives = [
+            "streng", "langweilig", "unorganisiert", "faul", "nervig",
+            "arrogant", "ungerecht", "chaotisch", "respektlos", "unfreundlich",
+            "abgelenkt", "überheblich", "unmotiviert", "langatmig", "schüchtern",
+            "unentschlossen", "negativ", "desinteressiert", "giftig", "kritiklos",
+            "unprofessionell", "verletzend", "einfältig", "verwirrend", "resigniert"
         ];
+
+        const adjectives = [...goodAdjectives, ...badAdjectives];
 
         let currentTeacherIndex = 0;
-        const ratings = [];
+        let feedbackArray = [];
 
-        document.getElementById('students-btn').onclick = function() {
-            document.getElementById('students-btn').style.display = 'none';
-            document.getElementById('teachers-btn').style.display = 'none';
-            showRatingSection();
-        }
-
-        document.getElementById('teachers-btn').onclick = function() {
-            alert("Lehrer können nicht bewerten.");
-        }
+        document.getElementById("students-btn").addEventListener("click", showRatingSection);
+        document.getElementById("teachers-btn").addEventListener("click", () => alert("Sie wurden aus der Seite geworfen."));
 
         function showRatingSection() {
-            document.getElementById('rating-section').style.display = 'block';
-            loadTeacher(currentTeacherIndex);
+            document.querySelector('.container h1').style.display = 'none';
+            document.getElementById("students-btn").style.display = 'none';
+            document.getElementById("teachers-btn").style.display = 'none';
+            document.getElementById("rating-section").style.display = 'block';
+            loadNextTeacher();
         }
 
-        function loadTeacher(index) {
-            const teachersContainer = document.getElementById('teachers-container');
-            teachersContainer.innerHTML = ''; // Clear previous content
-
-            const teacher = teachers[index];
-            const teacherCard = document.createElement('div');
-            teacherCard.classList.add('teacher-card');
-
-            teacherCard.innerHTML = `<strong>${teacher.name}</strong><br>
-                <div class="rating-container" data-index="${index}">
-                    ${[...Array(10)].map((_, i) => `<span class="star" data-value="${i + 1}">&#9733;</span>`).join('')}
-                </div>
-                <div class="adjectives-container">
-                    ${adjectivesPositive.concat(adjectivesNegative).map(adj => `
-                        <label>
-                            <input type="checkbox" value="${adj}"> ${adj}
-                        </label>
-                    `).join('')}
-                </div>`;
-            teachersContainer.appendChild(teacherCard);
-
-            const stars = teacherCard.querySelectorAll('.star');
-            stars.forEach(star => {
-                star.onclick = function() {
-                    const ratingContainer = star.parentElement;
-                    ratingContainer.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
-                    star.classList.add('selected');
-                    for (let i = 0; i < star.dataset.value; i++) {
-                        ratingContainer.children[i].classList.add('selected');
-                    }
-                };
-            });
-
-            // Show submit button if this is the last teacher
-            if (index === teachers.length - 1) {
-                document.getElementById('next-button').style.display = 'none';
-                document.getElementById('submit-button').style.display = 'block';
-            } else {
-                document.getElementById('next-button').style.display = 'block';
-                document.getElementById('submit-button').style.display = 'none';
-            }
-        }
-
-        document.getElementById('next-button').onclick = function() {
-            const rating = document.querySelector(`.teacher-card[data-index="${currentTeacherIndex}"] .rating-container .star.selected`);
-            const adjectivesChecked = Array.from(document.querySelector(`.teacher-card[data-index="${currentTeacherIndex}"] .adjectives-container input:checked`)).map(input => input.value);
-
-            if (rating) {
-                ratings.push({
-                    teacher: teachers[currentTeacherIndex].name,
-                    rating: parseInt(rating.dataset.value),
-                    adjectives: adjectivesChecked,
-                });
+        function loadNextTeacher() {
+            if (currentTeacherIndex < teachers.length) {
+                const teacher = teachers[currentTeacherIndex];
+                const teacherCard = `
+                    <div class="teacher-card">
+                        <img src="${teacher.image}" alt="${teacher.name}" class="teacher-image">
+                        <h3>${teacher.name}</h3>
+                        <div class="rating-container" id="rating-${currentTeacherIndex}">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <div class="adjectives-container">
+                            ${adjectives.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
+                        </div>
+                    </div>
+                `;
+                document.getElementById("teachers-container").innerHTML += teacherCard;
+                addStarListeners(currentTeacherIndex);
                 currentTeacherIndex++;
-                loadTeacher(currentTeacherIndex);
             } else {
-                alert("Bitte wähle eine Bewertung aus.");
+                document.getElementById("submit-button").style.display = 'block';
             }
-        };
+        }
 
-        document.getElementById('submit-button').onclick = function() {
-            const rating = document.querySelector(`.teacher-card[data-index="${currentTeacherIndex}"] .rating-container .star.selected`);
-            const adjectivesChecked = Array.from(document.querySelector(`.teacher-card[data-index="${currentTeacherIndex}"] .adjectives-container input:checked`)).map(input => input.value);
-
-            if (rating) {
-                ratings.push({
-                    teacher: teachers[currentTeacherIndex].name,
-                    rating: parseInt(rating.dataset.value),
-                    adjectives: adjectivesChecked,
+        function addStarListeners(index) {
+            const stars = document.querySelectorAll(`#rating-${index} .star`);
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    stars.forEach(s => s.classList.remove('selected'));
+                    star.classList.add('selected');
+                    feedbackArray[index] = { rating: star.dataset.value, adjectives: [] };
                 });
-
-                displayTopTeachers(ratings);
-            } else {
-                alert("Bitte wähle eine Bewertung aus.");
-            }
-        };
-
-        function displayTopTeachers(ratings) {
-            // Calculate average ratings for each teacher
-            const averages = {};
-
-            ratings.forEach(({ teacher, rating }) => {
-                if (!averages[teacher]) {
-                    averages[teacher] = { total: 0, count: 0 };
-                }
-                averages[teacher].total += rating;
-                averages[teacher].count++;
             });
+        }
 
-            const sortedTeachers = Object.keys(averages).map(name => {
-                return {
-                    name,
-                    average: averages[name].total / averages[name].count,
-                };
-            }).sort((a, b) => b.average - a.average);
+        document.getElementById("submit-button").addEventListener("click", handleSubmit);
 
-            document.getElementById('first').innerText = `1. Platz: ${sortedTeachers[0]?.name || 'N/A'}`;
-            document.getElementById('second').innerText = `2. Platz: ${sortedTeachers[1]?.name || 'N/A'}`;
-            document.getElementById('third').innerText = `3. Platz: ${sortedTeachers[2]?.name || 'N/A'}`;
+        function handleSubmit() {
+            document.querySelectorAll(".adjectives-container").forEach((container, index) => {
+                const checkedAdjectives = Array.from(container.querySelectorAll("input:checked")).map(input => input.value);
+                if (feedbackArray[index]) {
+                    feedbackArray[index].adjectives = checkedAdjectives;
+                }
+            });
+            showTopTeachers();
+        }
 
-            // Show the podium
-            document.getElementById('top-teachers').style.display = 'block';
+        function showTopTeachers() {
+            document.getElementById("rating-section").style.display = 'none';
+            const results = calculateTopTeachers();
+            displayTopTeachers(results);
+            startTimer();
+        }
 
-            // Start 30-second timer
+        function calculateTopTeachers() {
+            const ratings = feedbackArray.map(feedback => parseInt(feedback.rating) || 0);
+            const adjectiveCounts = {};
+            feedbackArray.forEach(feedback => {
+                feedback.adjectives.forEach(adj => {
+                    adjectiveCounts[adj] = (adjectiveCounts[adj] || 0) + 1;
+                });
+            });
+            const sortedAdjectives = Object.entries(adjectiveCounts).sort((a, b) => b[1] - a[1]);
+            const topAdjectives = sortedAdjectives.slice(0, 3).map(entry => entry[0]);
+
+            const topTeachers = ratings
+                .map((rating, index) => ({ name: teachers[index].name, rating, adjectives: feedbackArray[index].adjectives }))
+                .sort((a, b) => b.rating - a.rating)
+                .slice(0, 3);
+
+            return { topTeachers, topAdjectives };
+        }
+
+        function displayTopTeachers({ topTeachers, topAdjectives }) {
+            document.getElementById("top-teachers").style.display = 'block';
+            document.getElementById("first").innerText = `1. ${topTeachers[0].name}`;
+            document.getElementById("second").innerText = `2. ${topTeachers[1].name}`;
+            document.getElementById("third").innerText = `3. ${topTeachers[2].name}`;
+            if (topTeachers[0]) {
+                animateConfetti();
+            }
+        }
+
+        function startTimer() {
+            let timeLeft = 30;
+            const timerElement = document.getElementById("timer");
+            timerElement.innerText = `Sie werden in ${timeLeft} Sekunden herausgeworfen.`;
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerElement.innerText = `Sie werden in ${timeLeft} Sekunden herausgeworfen.`;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    alert("Danke für Ihre Bewertungen! Sie werden jetzt zur Startseite weitergeleitet.");
+                    window.location.reload();
+                }
+            }, 1000);
+        }
+
+        function animateConfetti() {
+            const confetti = document.getElementById("confetti");
+            confetti.classList.add("show");
             setTimeout(() => {
-                alert("Danke für Ihre Teilnahme! Die Umfrage wurde beendet.");
-                location.reload(); // Reload the page after 30 seconds
-            }, 30000);
+                confetti.classList.remove("show");
+            }, 3000);
         }
     </script>
 </body>
