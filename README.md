@@ -1,4 +1,3 @@
-# 6Kanji3.github.io
 <!DOCTYPE html>
 <html lang="de">
 <head>
