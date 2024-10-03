@@ -128,13 +128,16 @@
             width: 300px;
             padding: 20px;
             border-radius: 10px;
-            background-color: #FFD700; /* Gold color for first */
             margin-bottom: 10px;
             text-align: center;
             position: relative;
             font-size: 24px;
             color: white;
             transition: transform 0.5s;
+        }
+
+        .podium-position:nth-child(1) {
+            background-color: #FFD700; /* Gold */
         }
 
         .podium-position:nth-child(2) {
@@ -249,120 +252,151 @@
         document.getElementById("teachers-btn").addEventListener("click", () => alert("Sie wurden aus der Seite geworfen."));
 
         function showRatingSection() {
-            document.querySelector('.container h1').style.display = 'none';
-            document.getElementById("students-btn").style.display = 'none';
-            document.getElementById("teachers-btn").style.display = 'none';
-            document.getElementById("rating-section").style.display = 'block';
-            loadNextTeacher();
+            document.querySelector('.container h1').innerText = "Bewerten Sie die Lehrer";
+            document.getElementById("students-btn").style.display = "none";
+            document.getElementById("teachers-btn").style.display = "none";
+            document.getElementById("rating-section").style.display = "block";
+            renderTeachers();
         }
 
-        function loadNextTeacher() {
-            if (currentTeacherIndex < teachers.length) {
-                const teacher = teachers[currentTeacherIndex];
-                const teacherCard = `
-                    <div class="teacher-card">
-                        <img src="${teacher.image}" alt="${teacher.name}" class="teacher-image">
-                        <h3>${teacher.name}</h3>
-                        <div class="rating-container" id="rating-${currentTeacherIndex}">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <div class="adjectives-container">
-                            ${adjectives.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
-                        </div>
-                    </div>
-                `;
-                document.getElementById("teachers-container").innerHTML += teacherCard;
-                addStarListeners(currentTeacherIndex);
-                currentTeacherIndex++;
-            } else {
-                document.getElementById("submit-button").style.display = 'block';
+        function renderTeachers() {
+            const teachersContainer = document.getElementById("teachers-container");
+            teachersContainer.innerHTML = ""; // Clear previous content
+
+            teachers.forEach((teacher, index) => {
+                const teacherCard = document.createElement("div");
+                teacherCard.className = "teacher-card";
+
+                const teacherImage = document.createElement("img");
+                teacherImage.src = teacher.image;
+                teacherImage.alt = teacher.name;
+                teacherImage.className = "teacher-image";
+
+                const teacherName = document.createElement("h3");
+                teacherName.innerText = teacher.name;
+
+                const ratingContainer = document.createElement("div");
+                ratingContainer.className = "rating-container";
+
+                const ratingSpan = document.createElement("span");
+                ratingSpan.innerText = "⭐️";
+                ratingSpan.className = "rating";
+                ratingSpan.dataset.rating = 1;
+                ratingSpan.addEventListener("click", () => setRating(index, ratingSpan));
+                ratingContainer.appendChild(ratingSpan);
+
+                const adjectiveContainer = document.createElement("div");
+                adjectiveContainer.className = "adjectives-container";
+
+                adjectives.forEach(adjective => {
+                    const label = document.createElement("label");
+                    label.innerHTML = `<input type="checkbox" value="${adjective}"> ${adjective}`;
+                    adjectiveContainer.appendChild(label);
+                });
+
+                teacherCard.appendChild(teacherImage);
+                teacherCard.appendChild(teacherName);
+                teacherCard.appendChild(ratingContainer);
+                teacherCard.appendChild(adjectiveContainer);
+                teachersContainer.appendChild(teacherCard);
+            });
+        }
+
+        function setRating(index, ratingElement) {
+            const ratingValue = ratingElement.dataset.rating;
+            const selectedRating = document.querySelectorAll('.teacher-card')[index].querySelector('.rating');
+
+            // Clear previous ratings
+            const allStars = document.querySelectorAll('.rating');
+            allStars.forEach(star => star.classList.remove('selected'));
+            
+            // Set selected rating
+            for (let i = 0; i < ratingValue; i++) {
+                allStars[i].classList.add('selected');
             }
         }
 
-        function addStarListeners(index) {
-            const stars = document.querySelectorAll(`#rating-${index} .star`);
-            stars.forEach(star => {
-                star.addEventListener('click', () => {
-                    stars.forEach(s => s.classList.remove('selected'));
-                    star.classList.add('selected');
-                    feedbackArray[index] = { rating: star.dataset.value, adjectives: [] };
-                });
-            });
-        }
+        document.getElementById("submit-button").addEventListener("click", submitFeedback);
 
-        document.getElementById("submit-button").addEventListener("click", handleSubmit);
+        function submitFeedback() {
+            feedbackArray = []; // Reset feedback array
 
-        function handleSubmit() {
-            document.querySelectorAll(".adjectives-container").forEach((container, index) => {
-                const checkedAdjectives = Array.from(container.querySelectorAll("input:checked")).map(input => input.value);
-                if (feedbackArray[index]) {
-                    feedbackArray[index].adjectives = checkedAdjectives;
+            const teacherCards = document.querySelectorAll('.teacher-card');
+            teacherCards.forEach((card, index) => {
+                const selectedRating = card.querySelector('.rating.selected');
+                const selectedAdjectives = Array.from(card.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+                const teacherName = teachers[index].name;
+
+                if (selectedRating) {
+                    const ratingValue = selectedRating.dataset.rating;
+                    feedbackArray.push({ teacher: teacherName, rating: ratingValue, adjectives: selectedAdjectives });
                 }
             });
-            showTopTeachers();
-        }
 
-        function showTopTeachers() {
-            document.getElementById("rating-section").style.display = 'none';
-            const results = calculateTopTeachers();
-            displayTopTeachers(results);
-            startTimer();
+            // Calculate top teachers
+            const topTeachers = calculateTopTeachers();
+            displayTopTeachers(topTeachers);
         }
 
         function calculateTopTeachers() {
-            const ratings = feedbackArray.map(feedback => parseInt(feedback.rating) || 0);
-            const adjectiveCounts = {};
+            const teacherScores = {};
+
             feedbackArray.forEach(feedback => {
-                feedback.adjectives.forEach(adj => {
-                    adjectiveCounts[adj] = (adjectiveCounts[adj] || 0) + 1;
-                });
+                const teacher = feedback.teacher;
+                const rating = parseInt(feedback.rating);
+
+                if (!teacherScores[teacher]) {
+                    teacherScores[teacher] = { score: 0, count: 0 };
+                }
+
+                teacherScores[teacher].score += rating;
+                teacherScores[teacher].count += 1;
             });
-            const sortedAdjectives = Object.entries(adjectiveCounts).sort((a, b) => b[1] - a[1]);
-            const topAdjectives = sortedAdjectives.slice(0, 3).map(entry => entry[0]);
 
-            const topTeachers = ratings
-                .map((rating, index) => ({ name: teachers[index].name, rating, adjectives: feedbackArray[index].adjectives }))
-                .sort((a, b) => b.rating - a.rating)
-                .slice(0, 3);
+            const scoresArray = Object.entries(teacherScores).map(([name, { score, count }]) => ({
+                name,
+                average: (score / count).toFixed(2)
+            }));
 
-            return { topTeachers, topAdjectives };
+            scoresArray.sort((a, b) => b.average - a.average);
+            return scoresArray.slice(0, 3); // Top 3 teachers
         }
 
-        function displayTopTeachers({ topTeachers, topAdjectives }) {
-            document.getElementById("top-teachers").style.display = 'block';
-            document.getElementById("first").innerText = `1. ${topTeachers[0].name}`;
-            document.getElementById("second").innerText = `2. ${topTeachers[1].name}`;
-            document.getElementById("third").innerText = `3. ${topTeachers[2].name}`;
-            if (topTeachers[0]) {
-                animateConfetti();
-            }
+        function displayTopTeachers(topTeachers) {
+            document.getElementById("top-teachers").style.display = "block";
+
+            document.getElementById("first").innerText = `${topTeachers[0].name} - ${topTeachers[0].average} Sterne`;
+            document.getElementById("second").innerText = `${topTeachers[1].name} - ${topTeachers[1].average} Sterne`;
+            document.getElementById("third").innerText = `${topTeachers[2].name} - ${topTeachers[2].average} Sterne`;
+
+            startConfetti();
+            startTimer();
+        }
+
+        function startConfetti() {
+            const confetti = document.getElementById("confetti");
+            confetti.classList.add("show");
+
+            setTimeout(() => {
+                confetti.classList.remove("show");
+            }, 5000); // Show for 5 seconds
         }
 
         function startTimer() {
-            let timeLeft = 30;
+            let timeLeft = 10; // 10 seconds countdown
             const timerElement = document.getElementById("timer");
-            timerElement.innerText = `Sie werden in ${timeLeft} Sekunden herausgeworfen.`;
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timerElement.innerText = `Sie werden in ${timeLeft} Sekunden herausgeworfen.`;
+            timerElement.innerText = `Redirecting in ${timeLeft} seconds...`;
+
+            const timerInterval = setInterval(() => {
+                timeLeft -= 1;
+                timerElement.innerText = `Redirecting in ${timeLeft} seconds...`;
+
                 if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    alert("Danke für Ihre Bewertungen! Sie werden jetzt zur Startseite weitergeleitet.");
-                    window.location.reload();
+                    clearInterval(timerInterval);
+                    alert("Vielen Dank für Ihre Rückmeldung!");
+                    location.reload(); // Redirect or refresh page
                 }
             }, 1000);
-        }
-
-        function animateConfetti() {
-            const confetti = document.getElementById("confetti");
-            confetti.classList.add("show");
-            setTimeout(() => {
-                confetti.classList.remove("show");
-            }, 3000);
         }
     </script>
 </body>
