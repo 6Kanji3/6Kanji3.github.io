@@ -4,32 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monthly Lehrer Rating GSS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #83a4d4, #b6fbff);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 20px;
         }
         .container {
-            text-align: center;
-            background-color: #fff;
+            background-color: #ffffff;
             border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease-in-out;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
         }
         h1, h2 {
+            font-weight: 700;
             margin-bottom: 20px;
-        }
-        .menu {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 30px;
         }
         .menu button {
             padding: 15px 30px;
@@ -40,6 +43,8 @@
             color: #fff;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
+            margin: 10px 0;
+            width: 100%;
         }
         .menu button:hover {
             background-color: #0056b3;
@@ -50,8 +55,8 @@
             border: 1px solid #ccc;
             border-radius: 10px;
             padding: 20px;
-            width: 300px;
-            margin: 10px auto;
+            margin: 20px auto;
+            width: 100%;
             display: none;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -61,16 +66,17 @@
             opacity: 1;
         }
         .teacher-image {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
+            margin-bottom: 10px;
         }
         .rating-container {
-            margin: 10px 0;
+            margin: 15px 0;
         }
         .rating-container span {
-            font-size: 24px;
+            font-size: 30px;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -81,16 +87,16 @@
             color: gold;
         }
         .adjectives-container {
+            text-align: left;
             margin: 10px 0;
         }
         .adjectives-container label {
             display: block;
-            text-align: left;
             font-size: 14px;
+            margin-bottom: 5px;
         }
-        button#submit-button {
+        button#next-button, button#submit-button {
             display: block;
-            margin: 20px auto;
             padding: 10px 20px;
             font-size: 16px;
             border: none;
@@ -99,8 +105,10 @@
             color: #fff;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
+            margin: 20px 0;
+            width: 100%;
         }
-        button#submit-button:hover {
+        button#next-button:hover, button#submit-button:hover {
             background-color: #218838;
             transform: scale(1.05);
         }
@@ -122,23 +130,41 @@
             font-size: 16px;
             margin-top: 10px;
         }
+        /* Animationen */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                max-width: 100%;
+            }
+            .teacher-card {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Menüauswahl Lehrer oder Schüler -->
         <div id="menu-screen">
-            <h1>Willkommen zur Monthly Lehrer Rating GSS</h1>
+            <h1>Lehrer Rating GSS</h1>
+            <h2>Wähle deine Rolle:</h2>
             <div class="menu">
                 <button id="lehrer-btn">Lehrer</button>
                 <button id="schueler-btn">Schüler</button>
             </div>
         </div>
 
-        <!-- Lehrerbewertung (jeder Lehrer wird nacheinander angezeigt) -->
+        <!-- Lehrerbewertung -->
         <div id="rating-screen" class="hidden">
             <h2>Bewerte deine Lehrer</h2>
             <div id="teacher-list">
+                <!-- Lehrer-Karte für Frau Milani -->
                 <div class="teacher-card" data-teacher="frau-milani">
                     <img src="https://upload.wikimedia.org/wikipedia/en/d/dc/Rammstein_logo.png" alt="Frau Milani" class="teacher-image">
                     <h3>Frau Milani</h3>
@@ -172,7 +198,8 @@
                     </div>
                 </div>
 
-                <!-- Weitere Lehrer -->
+                <!-- Weitere Lehrer hinzufügen, ähnlich wie oben -->
+                <!-- Beispiel: Frau Heuser -->
                 <div class="teacher-card" data-teacher="frau-heuser">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Isaac_Newton_by_William_Blake.jpg/480px-Isaac_Newton_by_William_Blake.jpg" alt="Frau Heuser" class="teacher-image">
                     <h3>Frau Heuser</h3>
@@ -183,22 +210,23 @@
                         <span data-value="10">★</span>
                     </div>
                     <div class="adjectives-container">
-                        <!-- Gleiche Adjektive wie bei Frau Milani -->
+                        <!-- Gleiche Adjektive wie bei Milani -->
                     </div>
                 </div>
 
-                <!-- Weitere Lehrer einfügen wie oben -->
-
+                <!-- Lehrer durchblättern -->
+                <button id="next-button">Nächster Lehrer</button>
+                <button id="submit-button" class="hidden">Bewertung abschicken</button>
             </div>
-            <button id="next-button">Nächster Lehrer</button>
-            <button id="submit-button" class="hidden">Bewertung abschicken</button>
         </div>
 
-        <!-- Top 3 Lehrer anzeigen -->
-        <div id="results-page" class="hidden results-page">
+        <!-- Ergebnisseite -->
+        <div id="results-page" class="hidden">
             <h2>Top 3 Lehrer</h2>
-            <div id="top-teachers"></div>
-            <div id="timer">Verbleibende Zeit: <span id="time-left">30</span> Sekunden</div>
+            <div id="top-teachers">
+                <!-- Ergebnisse werden hier eingefügt -->
+            </div>
+            <div id="timer">Zeit bis zum Logout: <span id="time-left">30</span> Sekunden</div>
         </div>
     </div>
 
@@ -258,7 +286,7 @@
             topTeachers.innerHTML = `
                 <p><span class="medal">🥇</span> Frau Milani</p>
                 <p><span class="medal">🥈</span> Frau Heuser</p>
-                <p><span class="medal">🥉</span> Herr Müller</p>
+                <p><span class="medal">🥉</span> Herr Geßner</p>
             `;
         }
 
