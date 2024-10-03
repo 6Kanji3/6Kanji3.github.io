@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -209,96 +210,230 @@
                         <span data-value="10">★</span>
                     </div>
                     <div class="adjectives-container">
-                        <!-- Gleiche Adjektive wie bei Milani -->
+                        <label><input type="checkbox" value="freundlich"> Freundlich</label>
+                        <label><input type="checkbox" value="streng"> Streng</label>
+                        <label><input type="checkbox" value="geduldig"> Geduldig</label>
+                        <label><input type="checkbox" value="zielorientiert"> Zielorientiert</label>
+                        <label><input type="checkbox" value="kreativ"> Kreativ</label>
+                        <label><input type="checkbox" value="hilfsbereit"> Hilfsbereit</label>
+                        <label><input type="checkbox" value="inspirierend"> Inspirierend</label>
+                        <label><input type="checkbox" value="strukturiert"> Strukturiert</label>
+                        <label><input type="checkbox" value="motiviert"> Motiviert</label>
+                        <label><input type="checkbox" value="kompetent"> Kompetent</label>
+                        <label><input type="checkbox" value="unorganisiert"> Unorganisiert</label>
+                        <label><input type="checkbox" value="ungerecht"> Ungerecht</label>
+                        <label><input type="checkbox" value="langweilig"> Langweilig</label>
+                        <label><input type="checkbox" value="unfreundlich"> Unfreundlich</label>
+                        <label><input type="checkbox" value="nervig"> Nervig</label>
+                        <label><input type="checkbox" value="abgelenkt"> Abgelenkt</label>
+                        <label><input type="checkbox" value="chaotisch"> Chaotisch</label>
+                        <label><input type="checkbox" value="arrogant"> Arrogant</label>
+                        <label><input type="checkbox" value="faul"> Faul</label>
+                        <label><input type="checkbox" value="respektlos"> Respektlos</label>
                     </div>
                 </div>
 
-                <!-- Lehrer durchblättern -->
-                <button id="next-button">Nächster Lehrer</button>
-                <button id="submit-button" class="hidden">Bewertung abschicken</button>
+                <!-- Hier weitere Lehrer hinzufügen -->
+                <div class="teacher-card" data-teacher="herr-geßner">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/0/03/Ed_Sheeran_2019.jpg" alt="Herr Geßner" class="teacher-image">
+                    <h3>Herr Geßner</h3>
+                    <div class="rating-container">
+                        <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span>
+                        <span data-value="4">★</span><span data-value="5">★</span><span data-value="6">★</span>
+                        <span data-value="7">★</span><span data-value="8">★</span><span data-value="9">★</span>
+                        <span data-value="10">★</span>
+                    </div>
+                    <div class="adjectives-container">
+                        <label><input type="checkbox" value="freundlich"> Freundlich</label>
+                        <label><input type="checkbox" value="streng"> Streng</label>
+                        <label><input type="checkbox" value="geduldig"> Geduldig</label>
+                        <label><input type="checkbox" value="zielorientiert"> Zielorientiert</label>
+                        <label><input type="checkbox" value="kreativ"> Kreativ</label>
+                        <label><input type="checkbox" value="hilfsbereit"> Hilfsbereit</label>
+                        <label><input type="checkbox" value="inspirierend"> Inspirierend</label>
+                        <label><input type="checkbox" value="strukturiert"> Strukturiert</label>
+                        <label><input type="checkbox" value="motiviert"> Motiviert</label>
+                        <label><input type="checkbox" value="kompetent"> Kompetent</label>
+                        <label><input type="checkbox" value="unorganisiert"> Unorganisiert</label>
+                        <label><input type="checkbox" value="ungerecht"> Ungerecht</label>
+                        <label><input type="checkbox" value="langweilig"> Langweilig</label>
+                        <label><input type="checkbox" value="unfreundlich"> Unfreundlich</label>
+                        <label><input type="checkbox" value="nervig"> Nervig</label>
+                        <label><input type="checkbox" value="abgelenkt"> Abgelenkt</label>
+                        <label><input type="checkbox" value="chaotisch"> Chaotisch</label>
+                        <label><input type="checkbox" value="arrogant"> Arrogant</label>
+                        <label><input type="checkbox" value="faul"> Faul</label>
+                        <label><input type="checkbox" value="respektlos"> Respektlos</label>
+                    </div>
+                </div>
+
+                <div class="teacher-card" data-teacher="frau-koelker">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/LGBTQ_flag.svg/1024px-LGBTQ_flag.svg.png" alt="Frau Kölker" class="teacher-image">
+                    <h3>Frau Kölker</h3>
+                    <div class="rating-container">
+                        <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span>
+                        <span data-value="4">★</span><span data-value="5">★</span><span data-value="6">★</span>
+                        <span data-value="7">★</span><span data-value="8">★</span><span data-value="9">★</span>
+                        <span data-value="10">★</span>
+                    </div>
+                    <div class="adjectives-container">
+                        <label><input type="checkbox" value="freundlich"> Freundlich</label>
+                        <label><input type="checkbox" value="streng"> Streng</label>
+                        <label><input type="checkbox" value="geduldig"> Geduldig</label>
+                        <label><input type="checkbox" value="zielorientiert"> Zielorientiert</label>
+                        <label><input type="checkbox" value="kreativ"> Kreativ</label>
+                        <label><input type="checkbox" value="hilfsbereit"> Hilfsbereit</label>
+                        <label><input type="checkbox" value="inspirierend"> Inspirierend</label>
+                        <label><input type="checkbox" value="strukturiert"> Strukturiert</label>
+                        <label><input type="checkbox" value="motiviert"> Motiviert</label>
+                        <label><input type="checkbox" value="kompetent"> Kompetent</label>
+                        <label><input type="checkbox" value="unorganisiert"> Unorganisiert</label>
+                        <label><input type="checkbox" value="ungerecht"> Ungerecht</label>
+                        <label><input type="checkbox" value="langweilig"> Langweilig</label>
+                        <label><input type="checkbox" value="unfreundlich"> Unfreundlich</label>
+                        <label><input type="checkbox" value="nervig"> Nervig</label>
+                        <label><input type="checkbox" value="abgelenkt"> Abgelenkt</label>
+                        <label><input type="checkbox" value="chaotisch"> Chaotisch</label>
+                        <label><input type="checkbox" value="arrogant"> Arrogant</label>
+                        <label><input type="checkbox" value="faul"> Faul</label>
+                        <label><input type="checkbox" value="respektlos"> Respektlos</label>
+                    </div>
+                </div>
+
+                <div class="teacher-card" data-teacher="frau-luckey">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="Frau Luckey" class="teacher-image">
+                    <h3>Frau Luckey</h3>
+                    <div class="rating-container">
+                        <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span>
+                        <span data-value="4">★</span><span data-value="5">★</span><span data-value="6">★</span>
+                        <span data-value="7">★</span><span data-value="8">★</span><span data-value="9">★</span>
+                        <span data-value="10">★</span>
+                    </div>
+                    <div class="adjectives-container">
+                        <label><input type="checkbox" value="freundlich"> Freundlich</label>
+                        <label><input type="checkbox" value="streng"> Streng</label>
+                        <label><input type="checkbox" value="geduldig"> Geduldig</label>
+                        <label><input type="checkbox" value="zielorientiert"> Zielorientiert</label>
+                        <label><input type="checkbox" value="kreativ"> Kreativ</label>
+                        <label><input type="checkbox" value="hilfsbereit"> Hilfsbereit</label>
+                        <label><input type="checkbox" value="inspirierend"> Inspirierend</label>
+                        <label><input type="checkbox" value="strukturiert"> Strukturiert</label>
+                        <label><input type="checkbox" value="motiviert"> Motiviert</label>
+                        <label><input type="checkbox" value="kompetent"> Kompetent</label>
+                        <label><input type="checkbox" value="unorganisiert"> Unorganisiert</label>
+                        <label><input type="checkbox" value="ungerecht"> Ungerecht</label>
+                        <label><input type="checkbox" value="langweilig"> Langweilig</label>
+                        <label><input type="checkbox" value="unfreundlich"> Unfreundlich</label>
+                        <label><input type="checkbox" value="nervig"> Nervig</label>
+                        <label><input type="checkbox" value="abgelenkt"> Abgelenkt</label>
+                        <label><input type="checkbox" value="chaotisch"> Chaotisch</label>
+                        <label><input type="checkbox" value="arrogant"> Arrogant</label>
+                        <label><input type="checkbox" value="faul"> Faul</label>
+                        <label><input type="checkbox" value="respektlos"> Respektlos</label>
+                    </div>
+                </div>
             </div>
+            <button id="submit-button">Bewertungen abschicken</button>
         </div>
 
         <!-- Ergebnisseite -->
-        <div id="results-page" class="hidden">
+        <div id="results-screen" class="results-page hidden">
             <h2>Top 3 Lehrer</h2>
-            <div id="top-teachers">
-                <!-- Ergebnisse werden hier eingefügt -->
-            </div>
-            <div id="timer">Zeit bis zum Logout: <span id="time-left">30</span> Sekunden</div>
+            <div id="top-teachers"></div>
+            <div id="timer"></div>
         </div>
     </div>
 
     <script>
-        // Startseite Logik
-        const lehrerBtn = document.getElementById("lehrer-btn");
-        const schuelerBtn = document.getElementById("schueler-btn");
-        const menuScreen = document.getElementById("menu-screen");
-        const ratingScreen = document.getElementById("rating-screen");
-        const teacherCards = document.querySelectorAll(".teacher-card");
-        const nextButton = document.getElementById("next-button");
-        const submitButton = document.getElementById("submit-button");
-        const resultsPage = document.getElementById("results-page");
-        const topTeachers = document.getElementById("top-teachers");
-        const timeLeftSpan = document.getElementById("time-left");
+        const teacherCards = document.querySelectorAll('.teacher-card');
+        const submitButton = document.getElementById('submit-button');
+        const ratingScreen = document.getElementById('rating-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const topTeachersDiv = document.getElementById('top-teachers');
+        const timerDiv = document.getElementById('timer');
+        let selectedTeacherIndex = 0;
 
-        let currentTeacherIndex = 0;
-
-        // Lehrer oder Schüler auswählen
-        lehrerBtn.addEventListener("click", () => {
-            alert("Lehrer-Funktion wird noch implementiert.");
+        document.getElementById('lehrer-btn').addEventListener('click', () => {
+            document.getElementById('menu-screen').classList.add('hidden');
+            ratingScreen.classList.remove('hidden');
+            showTeacher(selectedTeacherIndex);
         });
 
-        schuelerBtn.addEventListener("click", () => {
-            menuScreen.classList.add("hidden");
-            ratingScreen.classList.remove("hidden");
-            showTeacherCard(currentTeacherIndex);
+        document.getElementById('schueler-btn').addEventListener('click', () => {
+            alert('Schüler können keine Bewertungen abgeben.');
         });
 
-        // Nächster Lehrer anzeigen
-        nextButton.addEventListener("click", () => {
-            currentTeacherIndex++;
-            if (currentTeacherIndex < teacherCards.length) {
-                showTeacherCard(currentTeacherIndex);
-            } else {
-                nextButton.classList.add("hidden");
-                submitButton.classList.remove("hidden");
+        function showTeacher(index) {
+            teacherCards.forEach(card => card.classList.remove('active'));
+            if (index < teacherCards.length) {
+                teacherCards[index].classList.add('active');
+            }
+        }
+
+        function handleStarRating(event) {
+            const stars = event.target.parentNode.children;
+            const selectedValue = event.target.getAttribute('data-value');
+            Array.from(stars).forEach(star => {
+                if (star.getAttribute('data-value') <= selectedValue) {
+                    star.classList.add('highlighted');
+                } else {
+                    star.classList.remove('highlighted');
+                }
+            });
+        }
+
+        teacherCards.forEach(card => {
+            const ratingContainer = card.querySelector('.rating-container');
+            ratingContainer.addEventListener('click', handleStarRating);
+        });
+
+        submitButton.addEventListener('click', () => {
+            if (selectedTeacherIndex < teacherCards.length) {
+                selectedTeacherIndex++;
+                if (selectedTeacherIndex < teacherCards.length) {
+                    showTeacher(selectedTeacherIndex);
+                } else {
+                    calculateTopTeachers();
+                }
             }
         });
 
-        // Lehrerkarte anzeigen
-        function showTeacherCard(index) {
-            teacherCards.forEach(card => card.classList.remove("active"));
-            teacherCards[index].classList.add("active");
+        function calculateTopTeachers() {
+            // Dummy data for demonstration
+            const results = [
+                { name: "Frau Milani", score: Math.floor(Math.random() * 10) + 1 },
+                { name: "Frau Heuser", score: Math.floor(Math.random() * 10) + 1 },
+                { name: "Herr Geßner", score: Math.floor(Math.random() * 10) + 1 },
+                { name: "Frau Kölker", score: Math.floor(Math.random() * 10) + 1 },
+                { name: "Frau Luckey", score: Math.floor(Math.random() * 10) + 1 },
+            ];
+
+            results.sort((a, b) => b.score - a.score);
+            const topTeachers = results.slice(0, 3);
+            displayTopTeachers(topTeachers);
         }
 
-        // Bewertung abschicken und Top 3 Lehrer anzeigen
-        submitButton.addEventListener("click", () => {
-            ratingScreen.classList.add("hidden");
-            resultsPage.classList.remove("hidden");
-            showTopTeachers();
-            startTimer();
-        });
-
-        // Beispiel-Logik zur Anzeige der Top 3 Lehrer (Dummy-Daten)
-        function showTopTeachers() {
-            topTeachers.innerHTML = `
-                <p><span class="medal">🥇</span> Frau Milani</p>
-                <p><span class="medal">🥈</span> Frau Heuser</p>
-                <p><span class="medal">🥉</span> Herr Geßner</p>
-            `;
+        function displayTopTeachers(topTeachers) {
+            topTeachers.forEach((teacher, index) => {
+                const medal = ['🥇', '🥈', '🥉'][index]; // Gold, Silber, Bronze
+                const teacherDiv = document.createElement('div');
+                teacherDiv.innerHTML = `<span class="medal">${medal}</span>${teacher.name} mit ${teacher.score} Punkten`;
+                topTeachersDiv.appendChild(teacherDiv);
+            });
+            resultsScreen.classList.remove('hidden');
+            ratingScreen.classList.add('hidden');
+            startTimer(30); // Start a 30-Sekunden Timer
         }
 
-        // Timer-Funktion
-        function startTimer() {
-            let timeLeft = 30;
-            const countdown = setInterval(() => {
-                timeLeft--;
-                timeLeftSpan.textContent = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    alert("Zeit ist um! Du wirst jetzt weitergeleitet.");
-                    window.location.reload();  // Seite neu laden
+        function startTimer(duration) {
+            let timer = duration, seconds;
+            const interval = setInterval(() => {
+                seconds = parseInt(timer % 60, 10);
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                timerDiv.textContent = "Die Ergebnisse werden in " + seconds + " Sekunden angezeigt...";
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    // Redirect oder eine andere Aktion hier hinzufügen
                 }
             }, 1000);
         }
