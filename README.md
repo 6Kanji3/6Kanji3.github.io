@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -141,66 +140,21 @@
 
     <script>
         const teachers = [
-            {
-                name: "Frau Milani",
-                image: "https://example.com/milani.jpg",
-            },
-            {
-                name: "Frau Heuser",
-                image: "https://example.com/heuser.jpg",
-            },
-            {
-                name: "Herr Geßner",
-                image: "https://example.com/geschner.jpg",
-            },
-            {
-                name: "Frau Kölker",
-                image: "https://example.com/koelker.jpg",
-            },
-            {
-                name: "Frau Luckey",
-                image: "https://example.com/luckey.jpg",
-            },
-            {
-                name: "Herr Leitner",
-                image: "https://example.com/leitner.jpg",
-            },
-            {
-                name: "Herr Menzel",
-                image: "https://example.com/menzel.jpg",
-            },
-            {
-                name: "Frau Leistikow",
-                image: "https://example.com/leistikow.jpg",
-            },
-            {
-                name: "Frau Selenkowitch",
-                image: "https://example.com/selenkowitch.jpg",
-            },
-            {
-                name: "Frau Kosar",
-                image: "https://example.com/kosar.jpg",
-            },
-            {
-                name: "Frau Dietsch",
-                image: "https://example.com/dietsch.jpg",
-            },
-            {
-                name: "Herr Luetel",
-                image: "https://example.com/luetel.jpg",
-            },
-            {
-                name: "Herr Claßen",
-                image: "https://example.com/classen.jpg",
-            },
-            {
-                name: "Herr Hanke",
-                image: "https://example.com/hanke.jpg",
-            },
-            {
-                name: "Frau Lips",
-                image: "https://example.com/lips.jpg",
-            }
+            { name: "Frau Milani", image: "https://example.com/milani.jpg" },
+            { name: "Frau Heuser", image: "https://example.com/heuser.jpg" },
+            { name: "Herr Geßner", image: "https://example.com/geschner.jpg" },
+            { name: "Frau Kölker", image: "https://example.com/koelker.jpg" },
+            { name: "Frau Luckey", image: "https://example.com/luckey.jpg" },
+            { name: "Herr Leitner", image: "https://example.com/leitner.jpg" },
+            { name: "Herr Menzel", image: "https://example.com/menzel.jpg" },
+            { name: "Frau Leistikow", image: "https://example.com/leistikow.jpg" },
+            { name: "Frau Selenkowitch", image: "https://example.com/selenkowitch.jpg" },
+            { name: "Frau Kosar", image: "https://example.com/kosar.jpg" },
+            { name: "Frau Dietsch", image: "https://example.com/dietsch.jpg" },
+            { name: "Herr Luetel", image: "https://example.com/luetel.jpg" },
+            { name: "Herr Claßen", image: "https://example.com/classen.jpg" },
+            { name: "Herr Hanke", image: "https://example.com/hanke.jpg" },
+            { name: "Frau Lips", image: "https://example.com/lips.jpg" }
         ];
 
         const adjectives = [
@@ -213,6 +167,7 @@
 
         let timerInterval;
         let countdown;
+        let currentTeacherIndex = 0;
 
         document.getElementById("students-btn").addEventListener("click", showRatingSection);
         document.getElementById("teachers-btn").addEventListener("click", () => alert("Sie wurden aus der Seite geworfen!"));
@@ -228,39 +183,35 @@
             const teachersContainer = document.getElementById("teachers-container");
             teachersContainer.innerHTML = "";
 
-            teachers.forEach((teacher, index) => {
-                const teacherCard = document.createElement("div");
-                teacherCard.classList.add("teacher-card");
-                teacherCard.innerHTML = `
-                    <img src="${teacher.image}" alt="${teacher.name}" class="teacher-image">
-                    <h3>${teacher.name}</h3>
-                    <div class="rating-container" data-teacher="${index}">
-                        ${Array.from({ length: 10 }, (_, i) => `<span data-value="${i + 1}">★</span>`).join('')}
-                    </div>
-                    <div class="adjectives-container">
-                        ${adjectives.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
-                    </div>
-                `;
-                teachersContainer.appendChild(teacherCard);
-            });
-
+            const teacher = teachers[currentTeacherIndex];
+            const teacherCard = document.createElement("div");
+            teacherCard.classList.add("teacher-card");
+            teacherCard.innerHTML = `
+                <img src="${teacher.image}" alt="${teacher.name}" class="teacher-image">
+                <h3>${teacher.name}</h3>
+                <div class="rating-container" data-teacher="${currentTeacherIndex}">
+                    ${Array.from({ length: 10 }, (_, i) => `<span data-value="${i + 1}">★</span>`).join('')}
+                </div>
+                <div class="adjectives-container">
+                    ${adjectives.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
+                </div>
+            `;
+            teachersContainer.appendChild(teacherCard);
             addStarRatingListeners();
         }
 
         function addStarRatingListeners() {
-            const ratingContainers = document.querySelectorAll('.rating-container');
-            ratingContainers.forEach(container => {
-                container.addEventListener('click', (e) => {
-                    if (e.target.dataset.value) {
-                        const value = e.target.dataset.value;
-                        container.querySelectorAll('span').forEach(span => {
-                            span.classList.remove('selected');
-                        });
-                        for (let i = 0; i < value; i++) {
-                            container.children[i].classList.add('selected');
-                        }
+            const ratingContainer = document.querySelector('.rating-container');
+            ratingContainer.addEventListener('click', (e) => {
+                if (e.target.dataset.value) {
+                    const value = e.target.dataset.value;
+                    ratingContainer.querySelectorAll('span').forEach(span => {
+                        span.classList.remove('selected');
+                    });
+                    for (let i = 0; i < value; i++) {
+                        ratingContainer.children[i].classList.add('selected');
                     }
-                });
+                }
             });
         }
 
@@ -274,7 +225,7 @@
                 if (countdown <= 0) {
                     clearInterval(timerInterval);
                     alert("Zeit abgelaufen!");
-                    location.reload(); // Seite neu laden
+                    displayTopTeachers([]);
                 }
             }, 1000);
         }
@@ -284,42 +235,43 @@
         }
 
         document.getElementById("submit-button").addEventListener("click", () => {
-            const feedback = [];
+            const name = teachers[currentTeacherIndex].name;
+            const rating = document.querySelector('.rating-container .selected') ? 
+                document.querySelector('.rating-container .selected').dataset.value : 'Keine Bewertung';
+            const selectedAdjectives = Array.from(document.querySelectorAll('.adjectives-container input:checked'))
+                .map(input => input.value);
 
-            const teacherCards = document.querySelectorAll('.teacher-card');
-            teacherCards.forEach((card, index) => {
-                const name = teachers[index].name;
-                const rating = card.querySelector('.rating-container .selected') ? 
-                    card.querySelector('.rating-container .selected').dataset.value : 'Keine Bewertung';
-                const selectedAdjectives = Array.from(card.querySelectorAll('.adjectives-container input:checked'))
-                    .map(input => input.value);
-
-                feedback.push({
-                    name: name,
-                    rating: rating,
-                    adjectives: selectedAdjectives
-                });
-            });
+            const feedback = {
+                name: name,
+                rating: rating,
+                adjectives: selectedAdjectives
+            };
 
             console.log("Feedback:", feedback);
-            alert("Bewertung erfolgreich abgesendet!");
-            clearInterval(timerInterval);
-            displayTopTeachers(feedback);
+            currentTeacherIndex++;
+
+            if (currentTeacherIndex < teachers.length) {
+                populateTeachers(); // Show next teacher
+            } else {
+                clearInterval(timerInterval);
+                displayTopTeachers([feedback]);
+            }
         });
 
         function displayTopTeachers(feedback) {
-            const topTeachers = feedback.sort((a, b) => b.rating - a.rating).slice(0, 3);
             document.getElementById("top-teachers").style.display = "block";
+            document.getElementById("first").innerHTML = `
+                <div class="top-teacher">
+                    <h3>${feedback[0].name}</h3>
+                    <p>Bewertung: ${feedback[0].rating}</p>
+                    <p>Adjektive: ${feedback[0].adjectives.join(', ')}</p>
+                </div>
+            `;
 
-            topTeachers.forEach((teacher, index) => {
-                document.getElementById(`${['first', 'second', 'third'][index]}`).innerHTML = `
-                    <div class="top-teacher">
-                        <h3>${teacher.name}</h3>
-                        <p>Bewertung: ${teacher.rating}</p>
-                        <p>Adjektive: ${teacher.adjectives.join(', ')}</p>
-                    </div>
-                `;
-            });
+            setTimeout(() => {
+                alert("Sie werden jetzt von der Seite geworfen.");
+                window.location.reload(); // Refresh the page after 30 seconds
+            }, 30000);
         }
     </script>
 </body>
