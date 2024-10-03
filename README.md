@@ -268,3 +268,110 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Lehrer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #podium {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .podium-position {
+            width: 300px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #FFD700; /* Gold color for first */
+            margin-bottom: 10px;
+            text-align: center;
+            position: relative;
+            font-size: 24px;
+            color: white;
+            transition: transform 0.5s;
+        }
+
+        .podium-position:nth-child(2) {
+            background-color: #C0C0C0; /* Silver */
+        }
+
+        .podium-position:nth-child(3) {
+            background-color: #cd7f32; /* Bronze */
+        }
+
+        .confetti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        .confetti.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Top Lehrer</h1>
+    <div id="podium">
+        <div class="podium-position" id="first"></div>
+        <div class="podium-position" id="second"></div>
+        <div class="podium-position" id="third"></div>
+        <div class="confetti" id="confetti"></div>
+    </div>
+
+    <script>
+        const topTeachers = JSON.parse(localStorage.getItem('topTeachers'));
+        const podium = document.getElementById("podium");
+        const confetti = document.getElementById("confetti");
+
+        topTeachers.forEach((teacher, index) => {
+            const positionDiv = document.getElementById(['first', 'second', 'third'][index]);
+            positionDiv.innerHTML = `${index + 1}. ${teacher.name}`;
+            if (index === 0) {
+                showConfetti();
+            }
+        });
+
+        function showConfetti() {
+            confetti.classList.add('show');
+            // Start confetti animation
+            setTimeout(() => {
+                confetti.classList.remove('show');
+            }, 5000); // Confetti displays for 5 seconds
+        }
+
+        setTimeout(() => {
+            alert("Sie werden jetzt von der Seite geworfen.");
+            window.location.href = "index.html"; // Redirect to main page after 30 seconds
+        }, 30000); // 30 seconds
+    </script>
+</body>
+</html>
