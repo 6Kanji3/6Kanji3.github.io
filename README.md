@@ -199,7 +199,7 @@
         </div>
 
         <div id="top-teachers">
-            <h2>Top 3 Lehrer</h2>
+            <h2>Top 3 Lehrer der Q1</h2>
             <div id="podium">
                 <div class="podium-position" id="first"></div>
                 <div class="podium-position" id="second"></div>
@@ -270,7 +270,11 @@
                             <span class="star" data-value="5">★</span>
                         </div>
                         <div class="adjectives-container">
-                            ${adjectives.map(adj => `<label><input type="checkbox" value="${adj}">${adj}</label>`).join('')}
+                            ${adjectives.map(adj => `
+                                <label>
+                                    <input type="checkbox" value="${adj}"> ${adj}
+                                </label>
+                            `).join('')}
                         </div>
                     </div>
                 `;
