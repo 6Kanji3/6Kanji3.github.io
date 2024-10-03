@@ -1,56 +1,3 @@
-# Monthly Lehrer Rating GSS
-
-Eine einfache Website, auf der Schüler ihre Lehrer bewerten können. Die Lehrer der Q1-Stufe werden anhand von Sternen (1-10) und durch Auswahl von Attributen wie "freundlich", "streng" usw. bewertet. Der Lehrer mit der besten Bewertung wird monatlich gekrönt!
-
-## Features
-- Bewertungssystem für Lehrer (1-10 Sterne)
-- Auswahl von Attributen, um den Lehrer sachlich zu beschreiben
-- Speicherung der Bewertungen im LocalStorage des Browsers
-- Automatische Berechnung der besten 3 Lehrer pro Monat
-- Die Seite ist so konzipiert, dass jede IP-Adresse nur einmal abstimmen kann.
-
-## Lehrer und zugewiesene Bilder
-Die Bilder der Lehrer sind durch ihre Namen zugeordnet:
-
-- **Frau Milani** - Rammstein Logo ![Rammstein Logo](https://upload.wikimedia.org/wikipedia/en/d/dc/Rammstein_logo.png)
-- **Frau Heuser** - Isaac Newton Bild ![Isaac Newton](https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Isaac_Newton_by_William_Blake.jpg/480px-Isaac_Newton_by_William_Blake.jpg)
-- **Herr Geßner** - Ed Sheeran Bild ![Ed Sheeran](https://upload.wikimedia.org/wikipedia/commons/4/45/Ed_Sheeran_2018.png)
-- **Frau Kölker** - LGBTQ Flagge ![LGBTQ Flagge](https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/LGBTQ_Flag.svg/1920px-LGBTQ_Flag.svg.png)
-- **Frau Luckey** - Frankreich Flagge
-- **Herr Leitner** - Kroatische Flagge
-- **Herr Menzel** - Fossil Uhr
-- **Frau Leistikow** - Waden
-- **Frau Selenkowitch** - Irgendwas mit Kunst
-- **Frau Kosar** - Heiratsringe
-- **Frau Dietsch** - Teebeutel
-- **Herr Luetel** - Mark Forster Bild
-- **Herr Claßen** - Sokrates Bild
-- **Herr Hanke** - Irgendwas mit Religion
-- **Frau Lips** - Dicke Lippen Bild
-
-## Verwendung der Website
-
-1. Forke dieses Repository oder klone es lokal.
-2. Öffne die Datei `index.html`, um die Website lokal zu testen.
-3. Um die Website live zu schalten, kannst du sie auf [GitHub Pages](https://pages.github.com/) bereitstellen.
-
-### Bereitstellung auf GitHub Pages
-
-1. Gehe zu den "Settings" deines GitHub-Repositories.
-2. Scrolle zu "GitHub Pages".
-3. Wähle unter "Source" die `main`-Branch und den Ordner `/root` aus.
-4. Deine Website wird nach kurzer Zeit unter `https://<dein-github-benutzername>.github.io/<repository-name>/` verfügbar sein.
-
-### QR-Code für die Website generieren
-
-1. Nachdem die Website live ist, kopiere die URL von GitHub Pages.
-2. Gehe auf eine QR-Code-Generator-Seite wie [qr-code-generator.com](https://www.qr-code-generator.com/).
-3. Füge die URL der Website in den Generator ein und erhalte deinen QR-Code.
-4. Drucke den QR-Code oder teile ihn, damit Schüler die Seite leicht erreichen können.
-
-## HTML-Code der Website
-
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -153,7 +100,43 @@ Die Bilder der Lehrer sind durch ihre Namen zugeordnet:
             </div>
         </div>
 
-        <!-- Weitere Lehrer hier hinzufügen -->
+        <div class="teacher-card" data-teacher="herr-gessner">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Ed_Sheeran_2018.png" alt="Herr Geßner" class="teacher-image">
+            <h3>Herr Geßner</h3>
+            <div class="rating-container">
+                <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span>
+                <span data-value="4">★</span><span data-value="5">★</span><span data-value="6">★</span>
+                <span data-value="7">★</span><span data-value="8">★</span><span data-value="9">★</span>
+                <span data-value="10">★</span>
+            </div>
+            <div class="adjectives-container">
+                <label><input type="checkbox" value="freundlich"> Freundlich</label>
+                <label><input type="checkbox" value="streng"> Streng</label>
+                <label><input type="checkbox" value="geduldig"> Geduldig</label>
+                <label><input type="checkbox" value="engagiert"> Engagiert</label>
+                <label><input type="checkbox" value="zielorientiert"> Zielorientiert</label>
+            </div>
+        </div>
+
+        <div class="teacher-card" data-teacher="frau-kolker">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/LGBTQ_Flag.svg/1920px-LGBTQ_Flag.svg.png" alt="Frau Kölker" class="teacher-image">
+            <h3>Frau Kölker</h3>
+            <div class="rating-container">
+                <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span>
+                <span data-value="4">★</span><span data-value="5">★</span><span data-value="6">★</span>
+                <span data-value="7">★</span><span data-value="8">★</span><span data-value="9">★</span>
+                <span data-value="10">★</span>
+            </div>
+            <div class="adjectives-container">
+                <label><input type="checkbox" value="freundlich"> Freundlich</label>
+                <label><input type="checkbox" value="streng"> Streng</label>
+                <label><input type="checkbox" value="geduldig"> Geduldig</label>
+                <label><input type="checkbox" value="engagiert"> Engagiert</label>
+                <label><input type="checkbox" value="zielorientiert"> Zielorientiert</label>
+            </div>
+        </div>
+
+        <!-- Weitere Lehrer hinzufügen -->
 
     </div>
 
