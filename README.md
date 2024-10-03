@@ -97,6 +97,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            margin: 10px 0;
         }
 
         .adjectives-container label {
