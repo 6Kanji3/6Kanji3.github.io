@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +15,6 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            overflow: hidden;
             color: #333;
         }
 
@@ -170,7 +168,8 @@
         <div id="rating-section">
             <h2>Lehrer bewerten</h2>
             <div id="teachers-container"></div>
-            <button class="button" id="submit-button">Bewertung abschicken</button>
+            <button class="button" id="next-button">Nächster Lehrer</button>
+            <button class="button" id="submit-button" style="display:none;">Bewertung abschicken</button>
         </div>
 
         <div id="top-teachers">
@@ -222,6 +221,9 @@
             "Ressentiment", "Stur"
         ];
 
+        let currentTeacherIndex = 0;
+        const ratings = [];
+
         document.getElementById('students-btn').onclick = function() {
             document.getElementById('students-btn').style.display = 'none';
             document.getElementById('teachers-btn').style.display = 'none';
@@ -230,36 +232,35 @@
 
         document.getElementById('teachers-btn').onclick = function() {
             alert("Lehrer können nicht bewerten.");
-            // Optionally redirect or display a message
         }
 
         function showRatingSection() {
             document.getElementById('rating-section').style.display = 'block';
-            loadTeachers();
+            loadTeacher(currentTeacherIndex);
         }
 
-        function loadTeachers() {
+        function loadTeacher(index) {
             const teachersContainer = document.getElementById('teachers-container');
             teachersContainer.innerHTML = ''; // Clear previous content
 
-            teachers.forEach((teacher, index) => {
-                const teacherCard = document.createElement('div');
-                teacherCard.classList.add('teacher-card');
+            const teacher = teachers[index];
+            const teacherCard = document.createElement('div');
+            teacherCard.classList.add('teacher-card');
 
-                teacherCard.innerHTML = `<strong>${teacher.name}</strong><br>
-                    <div class="rating-container" data-index="${index}">
-                        ${[...Array(10)].map((_, i) => `<span class="star" data-value="${i + 1}">★</span>`).join('')}
-                    </div>
-                    <div class="adjectives-container">
-                        ${adjectivesPositive.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
-                        ${adjectivesNegative.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
-                    </div>
-                `;
+            teacherCard.innerHTML = `<strong>${teacher.name}</strong><br>
+                <div class="rating-container" data-index="${index}">
+                    ${[...Array(10)].map((_, i) => `<span class="star" data-value="${i + 1}">★</span>`).join('')}
+                </div>
+                <div class="adjectives-container">
+                    ${adjectivesPositive.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
+                    ${adjectivesNegative.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
+                </div>
+            `;
 
-                teachersContainer.appendChild(teacherCard);
-            });
+            teachersContainer.appendChild(teacherCard);
 
-            const stars = document.querySelectorAll('.star');
+            // Add star rating functionality
+            const stars = teacherCard.querySelectorAll('.star');
             stars.forEach(star => {
                 star.onclick = function() {
                     const ratingContainer = star.parentElement;
@@ -270,47 +271,82 @@
                     }
                 };
             });
+
+            // Show submit button if this is the last teacher
+            if (index === teachers.length - 1) {
+                document.getElementById('next-button').style.display = 'none';
+                document.getElementById('submit-button').style.display = 'block';
+            } else {
+                document.getElementById('next-button').style.display = 'block';
+                document.getElementById('submit-button').style.display = 'none';
+            }
         }
+
+        document.getElementById('next-button').onclick = function() {
+            const rating = document.querySelector(`.teacher-card[data-index="${currentTeacherIndex}"] .rating-container .star.selected`);
+            const adjectivesChecked = Array.from(document.querySelector(`.teacher-card[data-index="${currentTeacherIndex}"] .adjectives-container input:checked`)).map(input => input.value);
+
+            if (rating) {
+                ratings.push({
+                    teacher: teachers[currentTeacherIndex].name,
+                    rating: parseInt(rating.dataset.value),
+                    adjectives: adjectivesChecked,
+                });
+                currentTeacherIndex++;
+                loadTeacher(currentTeacherIndex);
+            } else {
+                alert("Bitte wähle eine Bewertung aus.");
+            }
+        };
 
         document.getElementById('submit-button').onclick = function() {
-            const ratings = [];
-            const teachersContainers = document.querySelectorAll('.teacher-card');
+            const rating = document.querySelector(`.teacher-card[data-index="${currentTeacherIndex}"] .rating-container .star.selected`);
+            const adjectivesChecked = Array.from(document.querySelector(`.teacher-card[data-index="${currentTeacherIndex}"] .adjectives-container input:checked`)).map(input => input.value);
 
-            teachersContainers.forEach(container => {
-                const rating = container.querySelector('.rating-container .star.selected');
-                const adjectivesChecked = Array.from(container.querySelectorAll('.adjectives-container input:checked')).map(input => input.value);
-                
-                if (rating) {
-                    ratings.push({
-                        rating: parseInt(rating.dataset.value),
-                        adjectives: adjectivesChecked,
-                    });
-                }
-            });
+            if (rating) {
+                ratings.push({
+                    teacher: teachers[currentTeacherIndex].name,
+                    rating: parseInt(rating.dataset.value),
+                    adjectives: adjectivesChecked,
+                });
 
-            // Hier könnte eine Logik zum Berechnen der Top 3 Lehrer hinzugefügt werden.
-            displayTopTeachers(ratings);
-        }
+                displayTopTeachers(ratings);
+            } else {
+                alert("Bitte wähle eine Bewertung aus.");
+            }
+        };
 
         function displayTopTeachers(ratings) {
-            const podium = [[], [], []]; // Platz 1, 2, 3
+            // Calculate average ratings for each teacher
+            const averages = {};
 
-            ratings.forEach((item) => {
-                const { rating } = item;
-                if (rating >= 8) {
-                    podium[0].push(item);
-                } else if (rating >= 5) {
-                    podium[1].push(item);
-                } else {
-                    podium[2].push(item);
+            ratings.forEach(({ teacher, rating }) => {
+                if (!averages[teacher]) {
+                    averages[teacher] = { total: 0, count: 0 };
                 }
+                averages[teacher].total += rating;
+                averages[teacher].count++;
             });
 
-            document.getElementById('first').innerText = `1. Platz: ${podium[0].length} Lehrer`;
-            document.getElementById('second').innerText = `2. Platz: ${podium[1].length} Lehrer`;
-            document.getElementById('third').innerText = `3. Platz: ${podium[2].length} Lehrer`;
+            const sortedTeachers = Object.keys(averages).map(name => {
+                return {
+                    name,
+                    average: averages[name].total / averages[name].count,
+                };
+            }).sort((a, b) => b.average - a.average);
 
+            document.getElementById('first').innerText = `1. Platz: ${sortedTeachers[0]?.name || 'N/A'}`;
+            document.getElementById('second').innerText = `2. Platz: ${sortedTeachers[1]?.name || 'N/A'}`;
+            document.getElementById('third').innerText = `3. Platz: ${sortedTeachers[2]?.name || 'N/A'}`;
+
+            // Show the podium
             document.getElementById('top-teachers').style.display = 'block';
+
+            // Start 30-second timer
+            setTimeout(() => {
+                alert("Danke für Ihre Teilnahme! Die Umfrage wurde beendet.");
+                location.reload(); // Reload the page after 30 seconds
+            }, 30000);
         }
     </script>
 </body>
