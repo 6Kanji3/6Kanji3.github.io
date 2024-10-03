@@ -158,6 +158,25 @@
                 font-size: 20px;
             }
         }
+
+        /* Konfetti-Animation */
+        .confetti {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: red;
+            opacity: 0.8;
+            animation: fall 3s infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
     </style>
 </head>
 <body>
@@ -250,14 +269,15 @@
 
             teacherCard.innerHTML = `<strong>${teacher.name}</strong><br>
                 <div class="rating-container" data-index="${index}">
-                    ${[...Array(10)].map((_, i) => `<span class="star" data-value="${i + 1}">★</span>`).join('')}
+                    ${[...Array(10)].map((_, i) => `<span class="star" data-value="${i + 1}">&#9733;</span>`).join('')}
                 </div>
                 <div class="adjectives-container">
-                    ${adjectivesPositive.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
-                    ${adjectivesNegative.map(adj => `<label><input type="checkbox" value="${adj}"> ${adj}</label>`).join('')}
-                </div>
-            `;
-
+                    ${adjectivesPositive.concat(adjectivesNegative).map(adj => `
+                        <label>
+                            <input type="checkbox" value="${adj}"> ${adj}
+                        </label>
+                    `).join('')}
+                </div>`;
             teachersContainer.appendChild(teacherCard);
 
             const stars = teacherCard.querySelectorAll('.star');
