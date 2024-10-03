@@ -10,7 +10,7 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background-color: #e0f7fa;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,32 +23,40 @@
         h1 {
             font-size: 36px;
             margin-bottom: 20px;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
         }
 
         .container {
             text-align: center;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             padding: 30px;
             width: 90%;
             max-width: 600px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .button {
-            background-color: #6200ea;
+            background-color: #009688;
             color: white;
             padding: 15px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
             margin: 10px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
             font-size: 20px;
         }
 
         .button:hover {
-            background-color: #3700b3;
+            background-color: #00796b;
+            transform: scale(1.05);
         }
 
         #rating-section {
@@ -57,21 +65,15 @@
 
         .teacher-card {
             border: 1px solid #ddd;
-            border-radius: 10px;
+            border-radius: 15px;
             margin: 10px 0;
-            padding: 10px;
+            padding: 15px;
             background-color: #f9f9f9;
             transition: transform 0.3s;
         }
 
         .teacher-card:hover {
             transform: scale(1.02);
-        }
-
-        .teacher-image {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
         }
 
         .rating-container {
@@ -113,6 +115,7 @@
             border-radius: 10px;
             padding: 10px;
             margin: 5px;
+            font-size: 20px;
         }
 
         /* Podium Styles */
@@ -128,16 +131,13 @@
             width: 300px;
             padding: 20px;
             border-radius: 10px;
+            background-color: #FFD700; /* Gold color for first */
             margin-bottom: 10px;
             text-align: center;
             position: relative;
             font-size: 24px;
             color: white;
             transition: transform 0.5s;
-        }
-
-        .podium-position:nth-child(1) {
-            background-color: #FFD700; /* Gold */
         }
 
         .podium-position:nth-child(2) {
@@ -210,37 +210,33 @@
 
     <script>
         const teachers = [
-            { name: "Frau Milani", image: "https://example.com/milani.jpg" },
-            { name: "Frau Heuser", image: "https://example.com/heuser.jpg" },
-            { name: "Herr Geßner", image: "https://example.com/geßner.jpg" },
-            { name: "Frau Kölker", image: "https://example.com/koelker.jpg" },
-            { name: "Frau Luckey", image: "https://example.com/luckey.jpg" },
-            { name: "Herr Leitner", image: "https://example.com/leitner.jpg" },
-            { name: "Herr Menzel", image: "https://example.com/menzel.jpg" },
-            { name: "Frau Leistikow", image: "https://example.com/leistikow.jpg" },
-            { name: "Frau Selenkowitch", image: "https://example.com/selenkowitch.jpg" },
-            { name: "Frau Kosar", image: "https://example.com/kosar.jpg" },
-            { name: "Frau Dietsch", image: "https://example.com/dietsch.jpg" },
-            { name: "Herr Luetel", image: "https://example.com/luetel.jpg" },
-            { name: "Herr Claßen", image: "https://example.com/classen.jpg" },
-            { name: "Herr Hanke", image: "https://example.com/hanke.jpg" },
-            { name: "Frau Lips", image: "https://example.com/lips.jpg" }
+            { name: "Frau Milani" },
+            { name: "Frau Heuser" },
+            { name: "Herr Geßner" },
+            { name: "Frau Kölker" },
+            { name: "Frau Luckey" },
+            { name: "Herr Leitner" },
+            { name: "Herr Menzel" },
+            { name: "Frau Leistikow" },
+            { name: "Frau Selenkowitch" },
+            { name: "Frau Kosar" },
+            { name: "Frau Dietsch" },
+            { name: "Herr Luetel" },
+            { name: "Herr Claßen" },
+            { name: "Herr Hanke" },
+            { name: "Frau Lips" }
         ];
 
         const goodAdjectives = [
             "freundlich", "geduldig", "hilfsbereit", "inspirierend", "kreativ",
             "kompetent", "motiviert", "strukturiert", "erfahren", "zielstrebig",
-            "einfühlsam", "sympathisch", "dynamisch", "entspannt", "verlässlich",
-            "lebensbejahend", "flexibel", "engagiert", "zuverlässig", "humorvoll",
-            "positiv", "intelligent", "begeisternd", "herzlich", "tolerant"
+            "einfühlsam", "sympathisch", "dynamisch", "entspannt", "zuverlässig"
         ];
 
         const badAdjectives = [
             "streng", "langweilig", "unorganisiert", "faul", "nervig",
             "arrogant", "ungerecht", "chaotisch", "respektlos", "unfreundlich",
-            "abgelenkt", "überheblich", "unmotiviert", "langatmig", "schüchtern",
-            "unentschlossen", "negativ", "desinteressiert", "giftig", "kritiklos",
-            "unprofessionell", "verletzend", "einfältig", "verwirrend", "resigniert"
+            "abgelenkt", "überheblich", "unmotiviert", "langatmig", "schüchtern"
         ];
 
         const adjectives = [...goodAdjectives, ...badAdjectives];
@@ -252,151 +248,92 @@
         document.getElementById("teachers-btn").addEventListener("click", () => alert("Sie wurden aus der Seite geworfen."));
 
         function showRatingSection() {
-            document.querySelector('.container h1').innerText = "Bewerten Sie die Lehrer";
-            document.getElementById("students-btn").style.display = "none";
-            document.getElementById("teachers-btn").style.display = "none";
-            document.getElementById("rating-section").style.display = "block";
-            renderTeachers();
+            document.querySelector('.container h1').style.display = 'none';
+            document.getElementById("students-btn").style.display = 'none';
+            document.getElementById("teachers-btn").style.display = 'none';
+            document.getElementById("rating-section").style.display = 'block';
+            loadNextTeacher();
         }
 
-        function renderTeachers() {
-            const teachersContainer = document.getElementById("teachers-container");
-            teachersContainer.innerHTML = ""; // Clear previous content
+        function loadNextTeacher() {
+            if (currentTeacherIndex < teachers.length) {
+                const teacher = teachers[currentTeacherIndex];
+                const teacherCard = `
+                    <div class="teacher-card">
+                        <h3>${teacher.name}</h3>
+                        <div class="rating-container" id="rating-${currentTeacherIndex}">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <div class="adjectives-container">
+                            ${adjectives.map(adj => `<label><input type="checkbox" value="${adj}">${adj}</label>`).join('')}
+                        </div>
+                    </div>
+                `;
+                document.getElementById("teachers-container").innerHTML += teacherCard;
 
-            teachers.forEach((teacher, index) => {
-                const teacherCard = document.createElement("div");
-                teacherCard.className = "teacher-card";
+                // Add event listeners for star rating
+                const ratingContainer = document.getElementById(`rating-${currentTeacherIndex}`);
+                const stars = ratingContainer.querySelectorAll('.star');
 
-                const teacherImage = document.createElement("img");
-                teacherImage.src = teacher.image;
-                teacherImage.alt = teacher.name;
-                teacherImage.className = "teacher-image";
-
-                const teacherName = document.createElement("h3");
-                teacherName.innerText = teacher.name;
-
-                const ratingContainer = document.createElement("div");
-                ratingContainer.className = "rating-container";
-
-                const ratingSpan = document.createElement("span");
-                ratingSpan.innerText = "⭐️";
-                ratingSpan.className = "rating";
-                ratingSpan.dataset.rating = 1;
-                ratingSpan.addEventListener("click", () => setRating(index, ratingSpan));
-                ratingContainer.appendChild(ratingSpan);
-
-                const adjectiveContainer = document.createElement("div");
-                adjectiveContainer.className = "adjectives-container";
-
-                adjectives.forEach(adjective => {
-                    const label = document.createElement("label");
-                    label.innerHTML = `<input type="checkbox" value="${adjective}"> ${adjective}`;
-                    adjectiveContainer.appendChild(label);
+                stars.forEach(star => {
+                    star.addEventListener('click', function() {
+                        stars.forEach(s => s.classList.remove('selected'));
+                        for (let i = 0; i < this.dataset.value; i++) {
+                            stars[i].classList.add('selected');
+                        }
+                    });
                 });
 
-                teacherCard.appendChild(teacherImage);
-                teacherCard.appendChild(teacherName);
-                teacherCard.appendChild(ratingContainer);
-                teacherCard.appendChild(adjectiveContainer);
-                teachersContainer.appendChild(teacherCard);
-            });
-        }
-
-        function setRating(index, ratingElement) {
-            const ratingValue = ratingElement.dataset.rating;
-            const selectedRating = document.querySelectorAll('.teacher-card')[index].querySelector('.rating');
-
-            // Clear previous ratings
-            const allStars = document.querySelectorAll('.rating');
-            allStars.forEach(star => star.classList.remove('selected'));
-            
-            // Set selected rating
-            for (let i = 0; i < ratingValue; i++) {
-                allStars[i].classList.add('selected');
+                currentTeacherIndex++;
+            } else {
+                document.getElementById("submit-button").style.display = 'block';
             }
         }
 
         document.getElementById("submit-button").addEventListener("click", submitFeedback);
 
         function submitFeedback() {
-            feedbackArray = []; // Reset feedback array
-
-            const teacherCards = document.querySelectorAll('.teacher-card');
-            teacherCards.forEach((card, index) => {
-                const selectedRating = card.querySelector('.rating.selected');
-                const selectedAdjectives = Array.from(card.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
-                const teacherName = teachers[index].name;
-
-                if (selectedRating) {
-                    const ratingValue = selectedRating.dataset.rating;
-                    feedbackArray.push({ teacher: teacherName, rating: ratingValue, adjectives: selectedAdjectives });
-                }
+            const allTeachers = document.querySelectorAll('.teacher-card');
+            allTeachers.forEach((teacherCard, index) => {
+                const selectedStars = teacherCard.querySelectorAll('.star.selected');
+                const selectedAdjectives = Array.from(teacherCard.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
+                const rating = selectedStars.length;
+                const name = teachers[index].name;
+                feedbackArray.push({ name, rating, adjectives: selectedAdjectives });
             });
 
-            // Calculate top teachers
-            const topTeachers = calculateTopTeachers();
-            displayTopTeachers(topTeachers);
+            document.getElementById("rating-section").style.display = 'none';
+            showTopTeachers();
         }
 
-        function calculateTopTeachers() {
+        function showTopTeachers() {
+            const ratings = feedbackArray.map(f => f.rating);
             const teacherScores = {};
 
-            feedbackArray.forEach(feedback => {
-                const teacher = feedback.teacher;
-                const rating = parseInt(feedback.rating);
-
-                if (!teacherScores[teacher]) {
-                    teacherScores[teacher] = { score: 0, count: 0 };
-                }
-
-                teacherScores[teacher].score += rating;
-                teacherScores[teacher].count += 1;
+            feedbackArray.forEach(({ name, rating }) => {
+                if (!teacherScores[name]) teacherScores[name] = 0;
+                teacherScores[name] += rating;
             });
 
-            const scoresArray = Object.entries(teacherScores).map(([name, { score, count }]) => ({
-                name,
-                average: (score / count).toFixed(2)
-            }));
+            const sortedTeachers = Object.keys(teacherScores).sort((a, b) => teacherScores[b] - teacherScores[a]).slice(0, 3);
+            document.getElementById("first").innerText = sortedTeachers[0] || "N/A";
+            document.getElementById("second").innerText = sortedTeachers[1] || "N/A";
+            document.getElementById("third").innerText = sortedTeachers[2] || "N/A";
 
-            scoresArray.sort((a, b) => b.average - a.average);
-            return scoresArray.slice(0, 3); // Top 3 teachers
+            document.getElementById("top-teachers").style.display = 'block';
+            showConfetti();
         }
 
-        function displayTopTeachers(topTeachers) {
-            document.getElementById("top-teachers").style.display = "block";
-
-            document.getElementById("first").innerText = `${topTeachers[0].name} - ${topTeachers[0].average} Sterne`;
-            document.getElementById("second").innerText = `${topTeachers[1].name} - ${topTeachers[1].average} Sterne`;
-            document.getElementById("third").innerText = `${topTeachers[2].name} - ${topTeachers[2].average} Sterne`;
-
-            startConfetti();
-            startTimer();
-        }
-
-        function startConfetti() {
+        function showConfetti() {
             const confetti = document.getElementById("confetti");
             confetti.classList.add("show");
-
             setTimeout(() => {
                 confetti.classList.remove("show");
-            }, 5000); // Show for 5 seconds
-        }
-
-        function startTimer() {
-            let timeLeft = 10; // 10 seconds countdown
-            const timerElement = document.getElementById("timer");
-            timerElement.innerText = `Redirecting in ${timeLeft} seconds...`;
-
-            const timerInterval = setInterval(() => {
-                timeLeft -= 1;
-                timerElement.innerText = `Redirecting in ${timeLeft} seconds...`;
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    alert("Vielen Dank für Ihre Rückmeldung!");
-                    location.reload(); // Redirect or refresh page
-                }
-            }, 1000);
+            }, 3000);
         }
     </script>
 </body>
