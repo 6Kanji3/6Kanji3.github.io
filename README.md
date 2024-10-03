@@ -260,7 +260,6 @@
 
             teachersContainer.appendChild(teacherCard);
 
-            // Add star rating functionality
             const stars = teacherCard.querySelectorAll('.star');
             stars.forEach(star => {
                 star.onclick = function() {
