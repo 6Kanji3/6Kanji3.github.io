@@ -15,6 +15,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            overflow: hidden;
         }
 
         h1 {
@@ -165,9 +166,10 @@
             "chaotisch", "arrogant", "faul", "respektlos"
         ];
 
+        let currentTeacherIndex = 0;
+        let feedbackArray = [];
         let timerInterval;
         let countdown;
-        let currentTeacherIndex = 0;
 
         document.getElementById("students-btn").addEventListener("click", showRatingSection);
         document.getElementById("teachers-btn").addEventListener("click", () => alert("Sie wurden aus der Seite geworfen!"));
@@ -176,7 +178,6 @@
             document.querySelector(".container h1").style.display = "none";
             document.getElementById("rating-section").style.display = "block";
             populateTeachers();
-            startTimer();
         }
 
         function populateTeachers() {
@@ -215,25 +216,6 @@
             });
         }
 
-        function startTimer() {
-            countdown = 30;
-            updateTimer();
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                countdown--;
-                updateTimer();
-                if (countdown <= 0) {
-                    clearInterval(timerInterval);
-                    alert("Zeit abgelaufen!");
-                    displayTopTeachers([]);
-                }
-            }, 1000);
-        }
-
-        function updateTimer() {
-            document.getElementById("timer").innerText = `Zeit verbleibend: ${countdown}s`;
-        }
-
         document.getElementById("submit-button").addEventListener("click", () => {
             const name = teachers[currentTeacherIndex].name;
             const rating = document.querySelector('.rating-container .selected') ? 
@@ -247,31 +229,41 @@
                 adjectives: selectedAdjectives
             };
 
-            console.log("Feedback:", feedback);
+            feedbackArray.push(feedback);
             currentTeacherIndex++;
 
             if (currentTeacherIndex < teachers.length) {
                 populateTeachers(); // Show next teacher
             } else {
-                clearInterval(timerInterval);
-                displayTopTeachers([feedback]);
+                displayTopTeachers(feedbackArray);
             }
         });
 
         function displayTopTeachers(feedback) {
             document.getElementById("top-teachers").style.display = "block";
-            document.getElementById("first").innerHTML = `
-                <div class="top-teacher">
-                    <h3>${feedback[0].name}</h3>
-                    <p>Bewertung: ${feedback[0].rating}</p>
-                    <p>Adjektive: ${feedback[0].adjectives.join(', ')}</p>
-                </div>
-            `;
+            const topTeachers = feedback.sort((a, b) => b.rating - a.rating).slice(0, 3);
 
-            setTimeout(() => {
-                alert("Sie werden jetzt von der Seite geworfen.");
-                window.location.reload(); // Refresh the page after 30 seconds
-            }, 30000);
+            for (let i = 0; i < topTeachers.length; i++) {
+                document.getElementById(['first', 'second', 'third'][i]).innerHTML = `
+                    <div class="top-teacher">
+                        <h3>${topTeachers[i].name}</h3>
+                        <p>Bewertung: ${topTeachers[i].rating}</p>
+                        <p>Adjektive: ${topTeachers[i].adjectives.join(', ')}</p>
+                    </div>
+                `;
+            }
+
+            countdown = 30;
+            timerInterval = setInterval(() => {
+                if (countdown > 0) {
+                    document.getElementById("timer").innerText = `Sie werden in ${countdown} Sekunden von der Seite geworfen.`;
+                    countdown--;
+                } else {
+                    clearInterval(timerInterval);
+                    alert("Sie werden jetzt von der Seite geworfen.");
+                    window.location.reload(); // Refresh the page after 30 seconds
+                }
+            }, 1000);
         }
     </script>
 </body>
