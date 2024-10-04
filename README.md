@@ -2,250 +2,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monatliche Lehrerbewertung GSS</title>
+    <title>Lehrerbewertung - Top 3 Lehrer der Q1</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #e0f7fa; /* Heller Hintergrund */
+            background-color: #e0f7fa; /* Weiches, wolkenartiges Blau */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            color: #333; /* Textfarbe */
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
         }
 
         h1 {
-            font-size: 36px; /* Schriftgröße für den Haupttitel */
-            margin-bottom: 20px; /* Abstand nach unten */
-            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); /* Leichte Schatten */
+            font-size: 40px;
+            color: #555;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         .container {
-            text-align: center; /* Text zentrieren */
-            background-color: white; /* Hintergrundfarbe des Containers */
-            border-radius: 20px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Schatten für Tiefe */
-            padding: 30px; /* Innenabstand */
-            width: 90%; /* Breite des Containers */
-            max-width: 600px; /* Maximale Breite */
-            animation: fadeIn 0.5s ease; /* Animation beim Laden */
+            background-color: #ffffff;
+            border-radius: 50px; /* Runde Ecken für das fluffige Design */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 95%;
+            max-width: 800px;
+            text-align: center;
+            animation: fadeIn 0.7s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; } /* Von unsichtbar */
-            to { opacity: 1; } /* Zu sichtbar */
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .button {
-            background-color: #009688; /* Hauptfarbe der Schaltflächen */
-            color: white; /* Schriftfarbe */
-            padding: 15px 25px; /* Innenabstand */
-            border: none; /* Keine Rahmen */
-            border-radius: 30px; /* Abgerundete Ecken */
-            cursor: pointer; /* Zeiger für Hover-Effekt */
-            margin: 10px; /* Abstand zwischen Schaltflächen */
-            transition: background-color 0.3s, transform 0.3s; /* Animationseffekte */
-            font-size: 20px; /* Schriftgröße */
+            background-color: #009688;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .button:hover {
-            background-color: #00796b; /* Dunklere Farbe beim Hover */
-            transform: scale(1.05); /* Vergrößerungseffekt */
+            background-color: #00796b;
+            transform: scale(1.05);
         }
 
-        #rating-section {
-            display: none; /* Anfangs unsichtbar */
+        .rating-section {
+            display: none;
         }
 
         .teacher-card {
-            border: 1px solid #ddd; /* Rahmen für Lehrerkarte */
-            border-radius: 15px; /* Abgerundete Ecken */
-            margin: 10px 0; /* Abstand nach oben und unten */
-            padding: 15px; /* Innenabstand */
-            background-color: #f9f9f9; /* Hintergrundfarbe der Karte */
-            transition: transform 0.3s; /* Animation für Hover */
+            border: 2px solid #f0f0f0;
+            border-radius: 30px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            transition: transform 0.3s;
         }
 
         .teacher-card:hover {
-            transform: scale(1.02); /* Vergrößerung beim Hover */
+            transform: scale(1.02);
         }
 
         .rating-container {
-            display: flex; /* Flexbox für Sterne */
-            justify-content: center; /* Zentrieren */
-            margin: 10px 0; /* Abstand nach oben und unten */
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
         }
 
         .rating-container span {
-            font-size: 24px; /* Schriftgröße für Sterne */
-            cursor: pointer; /* Zeiger für Hover-Effekt */
-            margin: 0 2px; /* Abstand zwischen Sternen */
-            color: #ccc; /* Standardfarbe der Sterne */
+            font-size: 28px;
+            cursor: pointer;
+            margin: 0 3px;
+            color: #ccc;
         }
 
         .rating-container span.selected {
-            color: gold; /* Farbe für ausgewählte Sterne */
+            color: gold;
         }
 
         .adjectives-container {
-            display: flex; /* Flexbox für Adjektive */
-            flex-wrap: wrap; /* Zeilenumbruch */
-            justify-content: center; /* Zentrieren */
-            margin: 10px 0; /* Abstand nach oben und unten */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
         }
 
         .adjectives-container label {
-            margin: 5px; /* Abstand für Adjektiv-Labels */
-            font-size: 14px; /* Schriftgröße */
+            margin: 8px;
+            font-size: 16px;
+            background-color: #f0f0f0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        #top-teachers {
-            display: none; /* Anfangs unsichtbar */
-            margin-top: 20px; /* Abstand nach oben */
+        .adjectives-container input[type="checkbox"] {
+            display: none;
         }
 
-        .top-teacher {
-            background-color: #fff3cd; /* Hintergrundfarbe der besten Lehrer */
-            border: 1px solid #ffeeba; /* Rahmen für beste Lehrer */
-            border-radius: 10px; /* Abgerundete Ecken */
-            padding: 10px; /* Innenabstand */
-            margin: 5px; /* Abstand zwischen besten Lehrern */
-            font-size: 20px; /* Schriftgröße */
+        .adjectives-container input[type="checkbox"]:checked + label {
+            background-color: #80deea;
         }
 
-        /* Podium-Stile */
-        #podium {
-            display: flex; /* Flexbox für Podium */
-            flex-direction: column; /* Vertikale Anordnung */
-            align-items: center; /* Zentrieren */
-            justify-content: center; /* Zentrieren */
-            margin-top: 20px; /* Abstand nach oben */
+        #submit-button {
+            display: none;
+        }
+
+        .top-teachers {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .podium {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .podium-position {
-            width: 300px; /* Breite der Podiumsposition */
-            padding: 20px; /* Innenabstand */
-            border-radius: 10px; /* Abgerundete Ecken */
-            background-color: #FFD700; /* Gold für erste Position */
-            margin-bottom: 10px; /* Abstand nach unten */
-            text-align: center; /* Text zentrieren */
-            position: relative; /* Für Konfetti-Effekte */
-            font-size: 24px; /* Schriftgröße */
-            color: white; /* Schriftfarbe */
-            transition: transform 0.5s; /* Animationseffekt */
+            background-color: #FFD700;
+            padding: 20px;
+            border-radius: 20px;
+            color: white;
+            font-size: 24px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .podium-position:nth-child(2) {
-            background-color: #C0C0C0; /* Silber für zweite Position */
+            background-color: #C0C0C0;
         }
 
         .podium-position:nth-child(3) {
-            background-color: #cd7f32; /* Bronze für dritte Position */
+            background-color: #cd7f32;
         }
 
         .confetti {
-            position: absolute; /* Absolute Positionierung für Konfetti */
-            width: 100%; /* Volle Breite */
-            height: 100%; /* Volle Höhe */
-            top: 0; /* Oben */
-            left: 0; /* Links */
-            pointer-events: none; /* Keine Interaktion */
-            display: none; /* Anfangs unsichtbar */
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            display: none;
         }
 
         .confetti.show {
-            display: block; /* Sichtbar, wenn aktiviert */
+            display: block;
         }
 
-        /* Responsive Styles */
-        @media (max-width: 600px) {
+        /* Responsive Anpassungen */
+        @media (max-width: 768px) {
             h1 {
-                font-size: 28px; /* Kleinere Schriftgröße für Mobilgeräte */
-            }
-
-            .button {
-                font-size: 18px; /* Kleinere Schriftgröße für Schaltflächen */
-                padding: 12px 20px; /* Kleinerer Innenabstand */
+                font-size: 28px;
             }
 
             .teacher-card {
-                padding: 15px; /* Kleinerer Innenabstand */
+                padding: 15px;
             }
 
             .podium-position {
-                width: 80%; /* Breitere Position für Mobilgeräte */
-                font-size: 20px; /* Kleinere Schriftgröße */
+                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Monatliche Lehrerbewertung GSS</h1>
-        <button class="button" id="students-btn">Schüler</button>
-        <button class="button" id="teachers-btn">Lehrer</button>
+        <h1>Top 3 Lehrer der Q1 - Bewertung</h1>
+        <button class="button" id="start-rating-btn">Bewertung Starten</button>
 
-        <div id="rating-section">
+        <div class="rating-section" id="rating-section">
             <h2>Lehrer bewerten</h2>
-            <div id="teachers-container"></div> <!-- Container für Lehrer -->
-            <button class="button" id="submit-button">Bewertung abschicken</button> <!-- Button zum Absenden -->
-            <div id="timer"></div> <!-- Timer, falls benötigt -->
+            <div id="teachers-container"></div>
+            <button class="button" id="submit-button">Bewertung abschicken</button>
         </div>
 
-        <div id="top-teachers">
-            <h2>Top 3 Lehrer der Q1</h2>
-            <div id="podium">
-                <div class="podium-position" id="first"></div> <!-- Platz 1 -->
-                <div class="podium-position" id="second"></div> <!-- Platz 2 -->
-                <div class="podium-position" id="third"></div> <!-- Platz 3 -->
-                <div class="confetti" id="confetti"></div> <!-- Konfetti-Effekt -->
+        <div class="top-teachers" id="top-teachers">
+            <h2>Top 3 Lehrer</h2>
+            <div class="podium" id="podium">
+                <div class="podium-position" id="first"></div>
+                <div class="podium-position" id="second"></div>
+                <div class="podium-position" id="third"></div>
             </div>
+            <div class="confetti" id="confetti"></div>
         </div>
     </div>
 
     <script>
-        // Lehrerarray mit Namen aller Lehrer
+        // Liste aller Lehrer
         const teachers = [
-            { name: "Frau Milani" },
-            { name: "Frau Heuser" },
-            { name: "Herr Geßner" },
-            { name: "Frau Kölker" },
-            { name: "Frau Luckey" },
-            { name: "Herr Leitner" },
-            { name: "Herr Menzel" },
-            { name: "Frau Leistner" },
-            { name: "Herr Schmitt" },
-            { name: "Frau Thomas" },
-            { name: "Herr Rosenfeld" },
-            { name: "Herr Müller" },
-            { name: "Frau Becker" },
-            { name: "Herr Krüger" },
-            { name: "Frau Neumann" }
+            { name: "Frau Milani" }, { name: "Frau Heuser" }, { name: "Herr Geßner" },
+            { name: "Frau Kölker" }, { name: "Frau Luckey" }, { name: "Herr Leitner" },
+            { name: "Herr Menzel" }, { name: "Frau Leistner" }, { name: "Herr Schmitt" },
+            { name: "Frau Thomas" }, { name: "Herr Rosenfeld" }, { name: "Herr Müller" },
+            { name: "Frau Becker" }, { name: "Herr Krüger" }, { name: "Frau Neumann" }
         ];
 
-        // Array von Adjektiven für die Bewertung
+        // Liste der Adjektive
         const adjectives = [
-            "freundlich", "hilfsbereit", "motiviert", "kompetent", "engagiert",
+            "freundlich", "hilfsbereit", "motiviert", "kompetent", "engagiert", 
             "inspirierend", "verständlich", "unterstützend", "fair", "teamfähig",
-            "interessant", "unterhaltsam", "ansprechbar", "lebensnah", "aufrichtig", "respektvoll",
-            "schwierig", "langweilig", "unorganisiert", "wenig verständlich", "unmotiviert",
-            "ungerecht", "verwirrend", "abweisend", "nicht hilfsbereit", "nicht ansprechend",
-            "uninteressant", "nicht engagiert", "unzuverlässig", "nicht verständlich", "nicht kompetent"
+            "interessant", "unterhaltsam", "ansprechbar", "lebensnah", "respektvoll",
+            "schwierig", "langweilig", "unorganisiert", "wenig verständlich", 
+            "unmotiviert", "ungerecht", "verwirrend", "abweisend", "nicht hilfsbereit"
         ];
 
-        let currentTeacherIndex = 0; // Index des aktuellen Lehrers
-        let feedbackArray = []; // Array für die gesammelten Rückmeldungen
+        let currentTeacherIndex = 0;
+        let feedbackArray = [];
 
-        document.getElementById("students-btn").addEventListener("click", function() {
-            document.getElementById("rating-section").style.display = 'block'; // Zeige Bewertung Abschnitt
-            this.style.display = 'none'; // Verstecke Schüler-Button
-            document.getElementById("teachers-btn").style.display = 'none'; // Verstecke Lehrer-Button
-            showNextTeacher(); // Zeige den nächsten Lehrer
+        document.getElementById("start-rating-btn").addEventListener("click", function() {
+            document.getElementById("rating-section").style.display = 'block';
+            this.style.display = 'none';
+            showNextTeacher();
         });
 
         function showNextTeacher() {
@@ -255,81 +241,74 @@
                     <div class="teacher-card">
                         <h3>${teacher.name}</h3>
                         <div class="rating-container" id="rating-${currentTeacherIndex}">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
+                            ${[...Array(10)].map((_, i) => `<span class="star" data-value="${i+1}">★</span>`).join('')}
                         </div>
                         <div class="adjectives-container">
                             ${adjectives.map(adj => `
-                                <label>
-                                    <input type="checkbox" value="${adj}"> ${adj}
-                                </label>
+                                <input type="checkbox" id="adj-${adj}-${currentTeacherIndex}" value="${adj}">
+                                <label for="adj-${adj}-${currentTeacherIndex}">${adj}</label>
                             `).join('')}
                         </div>
                     </div>
                 `;
-                document.getElementById("teachers-container").innerHTML += teacherCard; // Füge Lehrerkarte hinzu
+                document.getElementById("teachers-container").innerHTML += teacherCard;
 
-                // Füge Ereignis-Listener für die Sternebewertung hinzu
+                // Ereignis-Listener für die Sternebewertung
                 const ratingContainer = document.getElementById(`rating-${currentTeacherIndex}`);
                 const stars = ratingContainer.querySelectorAll('.star');
 
                 stars.forEach(star => {
                     star.addEventListener('click', function() {
-                        stars.forEach(s => s.classList.remove('selected')); // Entferne Auswahl von allen Sternen
+                        stars.forEach(s => s.classList.remove('selected'));
                         for (let i = 0; i < this.dataset.value; i++) {
-                            stars[i].classList.add('selected'); // Füge ausgewählte Sterne hinzu
+                            stars[i].classList.add('selected');
                         }
                     });
                 });
 
-                currentTeacherIndex++; // Erhöhe den Index für den nächsten Lehrer
+                currentTeacherIndex++;
             } else {
-                document.getElementById("submit-button").style.display = 'block'; // Zeige den Absendebutton
+                document.getElementById("submit-button").style.display = 'block';
             }
         }
 
-        document.getElementById("submit-button").addEventListener("click", submitFeedback); // Ereignis-Listener für den Absendebutton
+        document.getElementById("submit-button").addEventListener("click", submitFeedback);
 
         function submitFeedback() {
             const allTeachers = document.querySelectorAll('.teacher-card');
             allTeachers.forEach((teacherCard, index) => {
                 const selectedStars = teacherCard.querySelectorAll('.star.selected');
                 const selectedAdjectives = Array.from(teacherCard.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
-                const rating = selectedStars.length; // Anzahl der ausgewählten Sterne
-                const name = teachers[index].name; // Name des Lehrers
-                feedbackArray.push({ name, rating, adjectives: selectedAdjectives }); // Speichere die Rückmeldung
+                const rating = selectedStars.length;
+                const name = teachers[index].name;
+                feedbackArray.push({ name, rating, adjectives: selectedAdjectives });
             });
 
-            document.getElementById("rating-section").style.display = 'none'; // Verstecke den Bewertungsabschnitt
-            showTopTeachers(); // Zeige die Top-Lehrer
+            document.getElementById("rating-section").style.display = 'none';
+            showTopTeachers();
         }
 
         function showTopTeachers() {
-            const ratings = feedbackArray.map(f => f.rating);
-            const teacherScores = {}; // Objekt für die Punktzahlen der Lehrer
-
+            const teacherScores = {};
             feedbackArray.forEach(({ name, rating }) => {
-                if (!teacherScores[name]) teacherScores[name] = 0; // Initialisiere den Lehrer
-                teacherScores[name] += rating; // Summiere die Bewertungen
+                if (!teacherScores[name]) teacherScores[name] = 0;
+                teacherScores[name] += rating;
             });
 
-            const sortedTeachers = Object.keys(teacherScores).sort((a, b) => teacherScores[b] - teacherScores[a]).slice(0, 3); // Sortiere die Lehrer und wähle die besten 3
-            document.getElementById("first").innerText = sortedTeachers[0] || "N/A"; // Erster Platz
-            document.getElementById("second").innerText = sortedTeachers[1] || "N/A"; // Zweiter Platz
-            document.getElementById("third").innerText = sortedTeachers[2] || "N/A"; // Dritter Platz
+            const sortedTeachers = Object.keys(teacherScores).sort((a, b) => teacherScores[b] - teacherScores[a]).slice(0, 3);
+            document.getElementById("first").innerText = sortedTeachers[0] || "N/A";
+            document.getElementById("second").innerText = sortedTeachers[1] || "N/A";
+            document.getElementById("third").innerText = sortedTeachers[2] || "N/A";
 
-            document.getElementById("top-teachers").style.display = 'block'; // Zeige die Top-Lehrer
-            showConfetti(); // Zeige Konfetti
+            document.getElementById("top-teachers").style.display = 'block';
+            showConfetti();
         }
 
         function showConfetti() {
             const confetti = document.getElementById("confetti");
-            confetti.classList.add("show"); // Aktiviere Konfetti
+            confetti.classList.add("show");
             setTimeout(() => {
-                confetti.classList.remove("show"); // Deaktiviere Konfetti nach 3 Sekunden
+                confetti.classList.remove("show");
             }, 3000);
         }
     </script>
