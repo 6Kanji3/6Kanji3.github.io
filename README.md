@@ -190,13 +190,13 @@
 <body>
     <div class="container">
         <h1>Rate Your Teacher</h1>
-        <button class="button" id="start-student-rating-btn">Für Schüler bewerten</button>
-        <button class="button" id="start-teacher-rating-btn">Für Lehrer bewerten</button>
+        <button class="button" id="start-student-rating-btn">Schüler</button>
+        <button class="button" id="start-teacher-rating-btn">Lehrer</button>
 
         <div class="rating-section" id="rating-section">
             <h2>Lehrer bewerten</h2>
             <div id="teachers-container"></div>
-            <button class="button next-teacher-button" id="next-teacher-btn">Nächsten Lehrer bewerten</button>
+            <button class="button next-teacher-button" id="next-teacher-btn">Bewertung speichern und nächsten Lehrer bewerten</button>
             <button class="button" id="submit-button">Bewertung abschicken</button>
         </div>
 
@@ -233,79 +233,92 @@
         let ratings = {};
 
         document.getElementById("start-student-rating-btn").addEventListener("click", startRating);
-        document.getElementById("start-teacher-rating-btn").addEventListener("click", startRating);
-        document.getElementById("next-teacher-btn").addEventListener("click", showNextTeacher);
+        document.getElementById("start-teacher-rating-btn").addEventListener("click", () => {
+            window.location.href = "https://www.andere-webseite.de";  // Hier wird die Seite verlassen
+        });
+        document.getElementById("next-teacher-btn").addEventListener("click", saveAndNextTeacher);
         document.getElementById("submit-button").addEventListener("click", submitRatings);
 
         function startRating() {
-            document.getElementById("rating-section").style.display = "block";
-            document.getElementById("start-student-rating-btn").style.display = "none";
-            document.getElementById("start-teacher-rating-btn").style.display = "none";
-            showNextTeacher();
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById("rating-section").style.display = 'block';
+            renderTeacher();
         }
 
-        function showNextTeacher() {
-            if (currentTeacherIndex >= teachers.length) {
-                document.getElementById("submit-button").style.display = "block";
-                document.getElementById("next-teacher-btn").style.display = "none";
-                return;
-            }
-
-            const teacher = teachers[currentTeacherIndex];
-            const teachersContainer = document.getElementById("teachers-container");
-
-            teachersContainer.innerHTML = `
-                <div class="teacher-card">
-                    <h3>${teacher.name}</h3>
-                    <div class="rating-container" id="rating-${teacher.name}">
-                        ${Array.from({ length: 10 }, (_, i) => `<span data-rating="${i + 1}">&#9733;</span>`).join("")}
+        function renderTeacher() {
+            if (currentTeacherIndex < teachers.length) {
+                const teacher = teachers[currentTeacherIndex];
+                const teachersContainer = document.getElementById("teachers-container");
+                teachersContainer.innerHTML = `
+                    <div class="teacher-card">
+                        <h3>${teacher.name}</h3>
+                        <div class="rating-container">
+                            ${Array.from({ length: 10 }, (_, i) => `
+                                <span class="star" data-value="${i + 1}">&#9733;</span>
+                            `).join('')}
+                        </div>
+                        <div class="adjectives-container">
+                            ${adjectives.map(adj => `
+                                <input type="checkbox" id="${adj}" name="adjectives" value="${adj}">
+                                <label for="${adj}">${adj}</label>
+                            `).join('')}
+                        </div>
                     </div>
-                    <div class="adjectives-container">
-                        ${adjectives.map(adj => `
-                            <input type="checkbox" id="${teacher.name}-${adj}" />
-                            <label for="${teacher.name}-${adj}">${adj}</label>
-                        `).join("")}
-                    </div>
-                </div>
-            `;
-
-            setupRatingSystem(teacher.name);
-            currentTeacherIndex++;
-        }
-
-        function setupRatingSystem(teacherName) {
-            const stars = document.querySelectorAll(`#rating-${teacherName} span`);
-            stars.forEach(star => {
-                star.addEventListener("click", function () {
-                    stars.forEach(s => s.classList.remove("selected"));
-                    this.classList.add("selected");
-                    ratings[teacherName] = {
-                        rating: this.dataset.rating,
-                        adjectives: getSelectedAdjectives(teacherName)
-                    };
+                `;
+                document.querySelectorAll('.star').forEach(star => {
+                    star.addEventListener('click', selectRating);
                 });
-            });
+                document.getElementById("next-teacher-btn").style.display = 'none';
+                document.getElementById("submit-button").style.display = 'none';
+            } else {
+                displayTopTeachers();
+            }
         }
 
-        function getSelectedAdjectives(teacherName) {
-            return adjectives.filter(adj => document.getElementById(`${teacherName}-${adj}`).checked);
+        function selectRating() {
+            const selectedRating = this.dataset.value;
+            const teacherCard = this.closest('.teacher-card');
+            const stars = teacherCard.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.classList.remove('selected');
+            });
+            for (let i = 0; i < selectedRating; i++) {
+                stars[i].classList.add('selected');
+            }
+            ratings[teachers[currentTeacherIndex].name] = {
+                rating: selectedRating,
+                adjectives: Array.from(teacherCard.querySelectorAll('input[name="adjectives"]:checked')).map(input => input.value)
+            };
+            document.getElementById("next-teacher-btn").style.display = 'block';
+            document.getElementById("submit-button").style.display = 'block';
+        }
+
+        function saveAndNextTeacher() {
+            currentTeacherIndex++;
+            renderTeacher();
         }
 
         function submitRatings() {
-            console.log("Bewertungen:", ratings);
-            showTopTeachers();
+            console.log(ratings); // Hier könnten die Bewertungen an einen Server gesendet werden
+            displayTopTeachers();
         }
 
-        function showTopTeachers() {
-            const topTeachersDiv = document.getElementById("top-teachers");
-            topTeachersDiv.style.display = "block";
+        function displayTopTeachers() {
+            document.getElementById("rating-section").style.display = 'none';
+            document.getElementById("top-teachers").style.display = 'block';
 
-            // Sortiere Lehrer nach Bewertung (für das Beispiel einfach Zufallsdaten)
-            const sortedTeachers = Object.keys(ratings).sort((a, b) => ratings[b].rating - ratings[a].rating);
-            
-            document.getElementById("first").textContent = `1. Platz: ${sortedTeachers[0]}`;
-            document.getElementById("second").textContent = `2. Platz: ${sortedTeachers[1]}`;
-            document.getElementById("third").textContent = `3. Platz: ${sortedTeachers[2]}`;
+            // Beispielhafte Logik zur Auswahl der besten Lehrer (hier einfach nur die ersten drei)
+            const topTeachers = Object.entries(ratings)
+                .sort(([, a], [, b]) => b.rating - a.rating)
+                .slice(0, 3);
+
+            topTeachers.forEach(([teacher, { rating }], index) => {
+                document.getElementById(`${['first', 'second', 'third'][index]}`).innerText = `${teacher}: ${rating} Sterne`;
+            });
+
+            // Konfetti oder Animationen können hier hinzugefügt werden
+            const confetti = document.getElementById("confetti");
+            confetti.classList.add("show");
         }
     </script>
 </body>
