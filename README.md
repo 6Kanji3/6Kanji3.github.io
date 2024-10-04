@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -190,13 +191,12 @@
 <body>
     <div class="container">
         <h1>Rate Your Teacher</h1>
-        <button class="button" id="start-student-rating-btn">Schüler</button>
-        <button class="button" id="start-teacher-rating-btn">Lehrer</button>
+        <button class="button" id="start-rating-btn">Lehrer bewerten</button>
 
         <div class="rating-section" id="rating-section">
             <h2>Lehrer bewerten</h2>
             <div id="teachers-container"></div>
-            <button class="button next-teacher-button" id="next-teacher-btn">Bewertung speichern und nächsten Lehrer bewerten</button>
+            <button class="button next-teacher-button" id="next-teacher-btn">Nächsten Lehrer bewerten</button>
             <button class="button" id="submit-button">Bewertung abschicken</button>
         </div>
 
@@ -232,10 +232,7 @@
         let currentTeacherIndex = 0;
         let ratings = {};
 
-        document.getElementById("start-student-rating-btn").addEventListener("click", startRating);
-        document.getElementById("start-teacher-rating-btn").addEventListener("click", () => {
-            window.location.href = "https://www.andere-webseite.de";  // Hier wird die Seite verlassen
-        });
+        document.getElementById("start-rating-btn").addEventListener("click", startRating);
         document.getElementById("next-teacher-btn").addEventListener("click", saveAndNextTeacher);
         document.getElementById("submit-button").addEventListener("click", submitRatings);
 
